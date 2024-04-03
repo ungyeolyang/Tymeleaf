@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+<div class="form-container">
+    <h1>회원가입</h1>
+    <form th:action="@{/emp/regist}" th:object="${regmembers}" method="post">
+        <div>
+            <label for="name">이름</label>
+            <input type="text" id="name" th:field="*{name}" />
+        </div>
+        <div>
+            <label for="id">아이디</label>
+            <input type="text" id="id" th:field="*{id}" />
+        </div>
+        <div>
+            <label for="pw">비밀번호</label>
+            <input type="text" id="pw" th:field="*{pw}" />
+        </div>
+        <div>
+            <label for="nick">닉네임</label>
+            <input type="text" id="nick" th:field="*{nick}" />
+        </div>
+        <div>
+            <button type="submit">등록</button>
+        </div>
+    </form>
+    <form th:action="@{/emp/start}" th:object="${members}" method="post">
+        <div>
+            <button type="submit">뒤로가가</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

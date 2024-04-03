@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+<h2>사원 정보</h2>
+<table >
+    <thead>
+    <tr>
+        <th>이름</th>
+        <th>닉네임</th>
+        <th>아이디</th>
+        <th>비밀번호</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each = "mems : ${members}">
+        <td th:text="${mems.name}"></td>
+        <td th:text="${mems.nick}"></td>
+        <td th:text="${mems.id}"></td>
+        <td th:text="${mems.pw}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

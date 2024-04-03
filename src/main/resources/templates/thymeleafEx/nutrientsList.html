@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>영양제 결과</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+<h2>영양제</h2>
+<table>
+    <thead>
+    <tr>
+        <th>영양제 이름</th>
+        <th>성분</th>
+        <th>성분</th>
+        <th>제조사</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each = "ing : ${ingredients}">
+        <td th:text="${ing.nutrientsName}"></td>
+        <td th:text="${ing.ingredientA}"></td>
+        <td th:text="${ing.ingredientB}"></td>
+        <td th:text="${ing.company}"></td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{/emp/searchNu}">
+    <div>
+        <button type="submit">영양제 검색</button>
+    </div>
+</form>
+<form th:action="@{/emp/main}">
+        <button type="submit">돌아가기</button>
+    </div>
+</form>
+</body>
+</html>
