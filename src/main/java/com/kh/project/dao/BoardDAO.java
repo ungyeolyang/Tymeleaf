@@ -1,7 +1,9 @@
 package com.kh.project.dao;
 
 import com.kh.project.common.Common;
+import com.kh.project.controller.Controller;
 import com.kh.project.vo.BoardVO;
+import com.kh.project.vo.MemberVO;
 import com.kh.project.vo.NutrientsVO;
 
 import java.sql.Connection;
@@ -98,7 +100,6 @@ public class BoardDAO {
     }
 
     public List<BoardVO> boardList(String data) {
-        BoardVO voB = new BoardVO();
         List<BoardVO> list = new ArrayList<>();
         try {
             conn = Common.getConnection();
@@ -109,6 +110,7 @@ public class BoardDAO {
 
             rs = stmt.executeQuery(query);
             while (rs.next()) {
+                BoardVO voB = new BoardVO();
                 String nick = rs.getString("USER_NICK");
                 String id = rs.getString("USER_ID");
                 String content = rs.getString("CONTENT");
@@ -129,13 +131,13 @@ public class BoardDAO {
         return list;
     }
 
-    public List<BoardVO> searchBoard(){
+    public List<BoardVO> searchBoard(MemberVO memberVO){
         List<BoardVO> list = new ArrayList<>();
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
 
-            String query1 = "SELECT * FROM BOARD WHERE USER_ID = '" +   "'";
+            String query1 = "SELECT * FROM BOARD WHERE USER_ID = '" +memberVO.getId()  + "'";
             rs = stmt.executeQuery(query1);
 
             while (rs.next()) {
@@ -178,10 +180,10 @@ public class BoardDAO {
         return true;
     }
 
-    public void comment(NutrientsVO vo,String content){
+    public void comment(NutrientsVO voNu,MemberVO voMem, String content){
         String query = null;
         query = "INSERT INTO BOARD VALUES (SEQ_COMMENT.NEXTVAL, '"
-                + vo.getNutrientsName() + "', '" +    "' , '" +
+                + voNu.getNutrientsName() + "', '"+ voMem.getId() +"' , '" + voMem.getNick()  +
                   "' , '" + content + "')";
 
         try {
@@ -218,7 +220,7 @@ public class BoardDAO {
         return true;
     }
 
-    void updateContent(int num,String content){
+    public void updateContent(int num,String content){
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
@@ -237,7 +239,7 @@ public class BoardDAO {
         Common.close(conn);
     }
 
-    void deleteContent(int num) {
+    public void deleteContent(int num) {
         Scanner sc = new Scanner(System.in);
         String query1;
         try {

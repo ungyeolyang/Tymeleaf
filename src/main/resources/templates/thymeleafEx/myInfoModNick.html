@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>닉네임 수정창</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+<div class="form-container">
+    <h1>닉네임 수정</h1>
+    <form th:action="@{/emp/myInfoModNick}" th:object="${nickMod}" method="post">
+        <div>
+            <label for="data">수정할 닉네임을 입력하세요</label>
+            <input type="text" id="data" th:field="*{data}" />
+            <label for="number">숫자</label>
+            <input type="text" id="number" th:field="*{number}" value="3" style="display: none;" />
+        </div>
+        <div>
+            <button type="submit">수정</button>
+        </div>
+    </form>
+    <form th:action="@{/emp/myInfo}">
+        <div>
+            <button type="submit">돌아가기</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

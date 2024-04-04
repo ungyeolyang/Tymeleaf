@@ -7,7 +7,7 @@
 <body class="container">
 <div class="form-container">
     <h1>검색</h1>
-    <form th:action="@{/emp/coment}" th:object="${comment}" method="post">
+    <form th:action="@{/emp/comment}" th:object="${comment}" method="post">
         <div>
             <label for="data">댓글을 입력하세요</label>
             <input type="text" id="data" th:field="*{data}" />

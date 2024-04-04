@@ -56,6 +56,44 @@ public class MemberDAO {
         Common.close(conn);
         return null;
     }
+
+    public String checkId(MemberVO memberVo) {
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            String query = "SELECT * FROM MEMBER WHERE USER_ID = '" + memberVo.getId() + "'";
+            rs = stmt.executeQuery(query);
+            if (rs.next()) {
+                return "이미 사용중인 아이디입니다. ";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return null;
+    }
+    public String checkPw(MemberVO memberVo) {
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            String query = "SELECT * FROM MEMBER WHERE USER_ID = '" + memberVo.getId() + "'";
+            rs = stmt.executeQuery(query);
+            if (memberVo.getPw().length() < 4) {
+                return "4자리 이상 비밀번호를 입력하세요. ";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return null;
+    }
+
     public void regist(MemberVO memberVo) {
         try {
             conn = Common.getConnection();

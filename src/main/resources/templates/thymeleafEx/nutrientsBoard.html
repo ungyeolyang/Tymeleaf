@@ -8,14 +8,14 @@
 <body class="container">
 <h2>영양제</h2>
 <ul th:each="ing : ${ingredients}">
-    <li  th:text="${ing.nutrientsName}"></li>
-    <li  th:text="${ing.ingredientA}"></li>
-    <li  th:text="${ing.ingredientB}"></li>
-    <li  th:text="${ing.company}"></li>
-    <li  th:text="${ing.howToTake}"></li>
+    <li  th:text="${'영양제 : ' + ing.nutrientsName}"></li>
+    <li  th:text="${'성분 : ' + ing.ingredientA}"></li>
+    <li  th:text="${'성분 : ' + ing.ingredientB}"></li>
+    <li  th:text="${'제조사 : ' + ing.company}"></li>
+    <li  th:text="${'복용법 : ' + ing.howToTake}"></li>
 </ul>
 <ul>
-    <li th:text="${efficacys}"></li>
+    <li th:text="${'효능' + efficacys}"></li>
 </ul>
 <ul>
     <li th:each="com : ${comments}" th:text="${com}"></li>

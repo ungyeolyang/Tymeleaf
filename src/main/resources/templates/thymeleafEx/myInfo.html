@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>내정보</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+<h2>내정보</h2>
+<ul th:each="my : ${myInfolist}">
+    <li  th:text="${'이름 : ' + my.name}"></li>
+    <li  th:text="${'닉네임 : ' + my.nick}"></li>
+    <li  th:text="${'비밀번호 : ' + my.pw}"></li>
+</ul>
+<form th:action="@{/emp/myInfoModName}">
+    <div>
+        <button type="submit">이름 수정하기</button>
+    </div>
+</form>
+<form th:action="@{/emp/myInfoModPw}">
+    <div>
+        <button type="submit">비밀번호 수정하기</button>
+    </div>
+</form>
+<form th:action="@{/emp/myInfoModNick}">
+    <div>
+        <button type="submit">닉네임 수정하기</button>
+    </div>
+</form>
+<form th:action="@{/emp/delCheck}">
+    <div>
+        <button type="submit">회원 탈퇴</button>
+    </div>
+</form>
+<form th:action="@{/emp/main}">
+        <button type="submit">돌아가기</button>
+    </div>
+</form>
+</body>
+</html>

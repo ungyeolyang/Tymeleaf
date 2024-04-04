@@ -6,7 +6,7 @@
 </head>
 <body class="container">
 <div class="form-container">
-    <h1>마이페이지</h1>
+    <h1 th:text="${myNick+ '님의 마이페이지'}"></h1>
     <form th:action="@{/emp/myInfo}">
         <div>
             <button type="submit">내정보</button>

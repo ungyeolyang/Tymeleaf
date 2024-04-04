@@ -23,6 +23,11 @@ thead {
     border-radius: 5px;
 }
 
+.horizontal-list li {
+    display: inline; /* 가로로 배치 */
+    margin-right: 10px; /* 각 항목 사이의 간격 설정 */
+}
+
 label {
     display: block;
     margin-bottom: 5px;

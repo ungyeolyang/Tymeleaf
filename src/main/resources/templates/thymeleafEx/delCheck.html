@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>영양제 검색창</title>
+    <title>메인페이지</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body class="container">
 <div class="form-container">
-    <h1>영양제 검색</h1>
-    <form th:action="@{/emp/searchNu}" th:object="${searchNu}" method="post">
+    <h1>정말 회원탈퇴를 진행하시겠습니까?</h1>
+    <form th:action="@{/emp/delMyInfo}">
         <div>
-            <label for="data">영양제 이름을 입력하세요</label>
-            <input type="text" id="data" th:field="*{data}" />
-        </div>
-        <div>
-            <button type="submit">검색</button>
+            <button type="submit">확인</button>
         </div>
     </form>
     <form th:action="@{/emp/main}">
