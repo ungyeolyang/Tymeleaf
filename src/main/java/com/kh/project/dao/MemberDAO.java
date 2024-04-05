@@ -4,7 +4,11 @@ package com.kh.project.dao;
 import com.kh.project.common.Common;
 import com.kh.project.vo.MemberVO;
 
+import javax.swing.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MemberDAO {
@@ -36,17 +40,34 @@ public class MemberDAO {
     }
 
     public String checkRegist(MemberVO memberVo) {
+            if(memberVo.getName().isEmpty()){
+                return "이름을 입력하세요.";
+            }
+            else if(checkJumin(memberVo) != null){
+                return checkJumin(memberVo);
+            }
+            else if(checkId(memberVo) != null){
+                return checkId(memberVo);
+            }
+            else if (memberVo.getPw().length() < 4) {
+                return "4자리 이상 비밀번호를 입력하세요. ";
+            }
+            else if (memberVo.getNick().isEmpty()){
+                return "닉네임을 입력하세요.";
+            }
+        return null;
+    }
+    public String checkFindId(MemberVO memberVo) {
+        String id = null;
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
 
-            String query = "SELECT * FROM MEMBER WHERE USER_ID = '" + memberVo.getId() + "'";
+            String query = "SELECT USER_ID FROM MEMBER WHERE USER_NAME = '" + memberVo.getName() +
+                    "' AND USER_JUMIN = '" + memberVo.getJumin() +"'";
             rs = stmt.executeQuery(query);
-            if (rs.next()) {
-                return "이미 사용중인 아이디입니다. ";
-            }
-            else if (memberVo.getPw().length() < 4) {
-                return "4자리 이상 비밀번호를 입력하세요. ";
+            while (rs.next()) {
+                id = rs.getString("USER_ID");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,9 +75,30 @@ public class MemberDAO {
         Common.close(rs);
         Common.close(stmt);
         Common.close(conn);
-        return null;
+        return id;
     }
 
+    public String checkFindPw(MemberVO memberVo) {
+        String pw = null;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            String query = "SELECT USER_PW FROM MEMBER WHERE USER_NAME = '" + memberVo.getName() +
+                    "' AND USER_ID = '" + memberVo.getId() +"' AND USER_JUMIN = '" + memberVo.getJumin() +"'";
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                pw = rs.getString("USER_PW");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return pw;
+    }
     public String checkId(MemberVO memberVo) {
         try {
             conn = Common.getConnection();
@@ -64,9 +106,13 @@ public class MemberDAO {
 
             String query = "SELECT * FROM MEMBER WHERE USER_ID = '" + memberVo.getId() + "'";
             rs = stmt.executeQuery(query);
-            if (rs.next()) {
+            if(memberVo.getId().isEmpty()) {
+                return "아이디를 입력해주세요. ";
+            }
+            else if (rs.next()) {
                 return "이미 사용중인 아이디입니다. ";
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,16 +121,21 @@ public class MemberDAO {
         Common.close(conn);
         return null;
     }
-    public String checkPw(MemberVO memberVo) {
+
+    public String checkJumin(MemberVO memberVo) {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
 
-            String query = "SELECT * FROM MEMBER WHERE USER_ID = '" + memberVo.getId() + "'";
+            String query = "SELECT USER_JUMIN FROM MEMBER WHERE USER_JUMIN = '" + memberVo.getJumin() + "'";
             rs = stmt.executeQuery(query);
-            if (memberVo.getPw().length() < 4) {
-                return "4자리 이상 비밀번호를 입력하세요. ";
+            if(memberVo.getJumin().isEmpty()) {
+                return "주민번호를 입력해주세요. ";
             }
+            else if (rs.next()) {
+                return "이미 등록된 주민등록번호입니다.";
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,13 +148,14 @@ public class MemberDAO {
     public void regist(MemberVO memberVo) {
         try {
             conn = Common.getConnection();
-            String sql = "INSERT INTO MEMBER(USER_ID, USER_PW, USER_NAME, USER_NICK) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO MEMBER(USER_ID, USER_PW, USER_NAME, USER_NICK, USER_JUMIN) VALUES (?,?,?,?,?)";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, memberVo.getId());
             pstmt.setString(2, memberVo.getPw());
             pstmt.setString(3, memberVo.getName());
             pstmt.setString(4, memberVo.getNick());
+            pstmt.setString(5, memberVo.getJumin());
             pstmt.executeUpdate();
 
         } catch (Exception e) {
@@ -122,33 +174,6 @@ public class MemberDAO {
             conn = Common.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, name);
-            pstmt.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Common.close(stmt);
-        Common.close(conn);
-    }
-    public void empUpdate() {
-        System.out.print("변경할 사원의 이름을 입력 하세요 : ");
-        String name = sc.next();
-        System.out.print("직책 : ");
-        String job = sc.next();
-        System.out.print("급여 : " );
-        int sal = sc.nextInt();
-        System.out.print("성과급 : " );
-        int comm = sc.nextInt();
-
-        String sql = "UPDATE EMP SET JOB = ?, SAL = ?, COMM = ? WHERE ENAME = ?";
-
-        try {
-            conn = Common.getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, job);
-            pstmt.setInt(2, sal);
-            pstmt.setInt(3,  comm);
-            pstmt.setString(4, name);
             pstmt.executeUpdate();
 
         } catch (Exception e) {
