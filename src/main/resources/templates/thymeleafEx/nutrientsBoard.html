@@ -15,10 +15,12 @@
     <li  th:text="${'복용법 : ' + ing.howToTake}"></li>
 </ul>
 <ul>
-    <li th:text="${'효능' + efficacys}"></li>
+    <li th:text="${'효능 :' + efficacys}"></li>
 </ul>
-<ul>
-    <li th:each="com : ${comments}" th:text="${com}"></li>
+<ul th:each="com : ${comments}">
+    <li  th:text="${com.userNick}"></li>
+    <li  th:text="${'('+ com.userId + ')'}"></li>
+    <li  th:text="${com.content}"></li>
 </ul>
 
 <form th:action="@{/emp/comment}">

@@ -105,8 +105,8 @@ public class BoardDAO {
             conn = Common.getConnection();
             stmt = conn.createStatement();
 
-            String query = "SELECT USER_NICK,RPAD(SUBSTR(USER_ID,1,3),LENGTH (USER_ID),'*') AS \"USER_ID\",CONTENT " +
-                    "FROM BOARD WHERE NUTRIENTS_NAME = '%" + data +"%'";
+            String query = "SELECT USER_NICK,RPAD(SUBSTR(USER_ID,1,3),LENGTH (USER_ID),'*') AS USER_ID,CONTENT " +
+                    "FROM BOARD WHERE NUTRIENTS_NAME LIKE '%" + data +"%'";
 
             rs = stmt.executeQuery(query);
             while (rs.next()) {

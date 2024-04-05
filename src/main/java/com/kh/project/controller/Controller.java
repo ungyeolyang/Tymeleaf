@@ -133,8 +133,8 @@ public class Controller {
         }
         List<NutrientsVO> list = new ArrayList<>();
         NutrientsVO voNut = boardDAO.boardNut(searchVO.getData());
-        session.setAttribute("userNu", voNut);
         list.add(voNut);
+        session.setAttribute("userNu", voNut);
         model.addAttribute("ingredients", list);
         model.addAttribute("efficacys", boardDAO.boardEFF(searchVO.getData()));
         model.addAttribute("comments", boardDAO.boardList(searchVO.getData()));
@@ -184,58 +184,6 @@ public class Controller {
         session.setAttribute("userInfo",myInfoVO);
         return "thymeleafEx/main";
     }
-
-//    @GetMapping("/myInfoModName")
-//    public String myInfoModName(Model model) {
-//        SearchVO searchVO = new SearchVO();
-//        searchVO.setNumber(1);
-//        model.addAttribute("nameMod", searchVO);
-//        return "thymeleafEx/myInfoModName";
-//    }
-//
-//    @PostMapping("/myInfoModName")
-//    public String myInfoModName1(@ModelAttribute("nameMod") SearchVO searchVO, HttpSession session) {
-//        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
-//        System.out.println(memberVO.getId() + memberVO.getPw() + memberVO.getNick());
-//        myInfoDAO.updateMyInfo(searchVO, memberVO);
-//        memberVO.setName(searchVO.getData());
-//        session.setAttribute("userInfo", memberVO);
-//        return "thymeleafEx/main";
-//    }
-//
-//    @GetMapping("/myInfoModPw")
-//    public String myInfoModPw(Model model) {
-//        SearchVO searchVO = new SearchVO();
-//        searchVO.setNumber(2);
-//        model.addAttribute("pwMod", searchVO);
-//        return "thymeleafEx/myInfoModPw";
-//    }
-//
-//    @PostMapping("/myInfoModPw")
-//    public String myInfoModPw1(@ModelAttribute("pwMod") SearchVO searchVO, HttpSession session) {
-//        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
-//        myInfoDAO.updateMyInfo(searchVO, memberVO);
-//        memberVO.setPw(searchVO.getData());
-//        session.setAttribute("userInfo", memberVO);
-//        return "thymeleafEx/main";
-//    }
-//
-//    @GetMapping("/myInfoModNick")
-//    public String myInfoModNick(Model model) {
-//        SearchVO searchVO = new SearchVO();
-//        searchVO.setNumber(3);
-//        model.addAttribute("nickMod", searchVO);
-//        return "thymeleafEx/myInfoModNick";
-//    }
-//
-//    @PostMapping("/myInfoModNick")
-//    public String myInfoModNick1(@ModelAttribute("nickMod") SearchVO searchVO, HttpSession session) {
-//        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
-//        myInfoDAO.updateMyInfo(searchVO, memberVO);
-//        memberVO.setNick(searchVO.getData());
-//        session.setAttribute("userInfo", memberVO);
-//        return "thymeleafEx/main";
-//    }
 
     @GetMapping("/delCheck")
     public String delCheck() {
