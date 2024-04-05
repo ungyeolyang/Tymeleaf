@@ -10,7 +10,7 @@
     <form th:action="@{/emp/myInfoModName}" th:object="${nameMod}" method="post">
         <div>
             <label for="data">수정할 이름을 입력하세요</label>
-            <input type="text" id="data" th:field="*{data}" />
+            <input type="text" id="data" th:field="*{name}" />
             <label for="number">숫자</label>
             <input type="text" id="number" th:field="*{number}" value="1" style="display: none;" />
         </div>

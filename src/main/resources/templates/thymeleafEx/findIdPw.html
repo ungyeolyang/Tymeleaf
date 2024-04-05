@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>아이디/비밀번호 찾기</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+<div class="form-container">
+    <h1>아이디/비밀번호 찾기</h1>
+    <form th:action="@{/emp/findId}">
+        <div>
+            <button type="submit">아이디찾기</button>
+        </div>
+    </form>
+    <form th:action="@{/emp/findPw}">
+        <div>
+            <button type="submit">비밀번호찾기</button>
+        </div>
+    </form>
+    <form th:action="@{/emp/start}">
+        <div>
+            <button type="submit">돌아가기</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

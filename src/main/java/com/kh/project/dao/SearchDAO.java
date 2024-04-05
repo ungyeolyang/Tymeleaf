@@ -1,6 +1,7 @@
 package com.kh.project.dao;
 
 import com.kh.project.common.Common;
+import com.kh.project.vo.MemberVO;
 import com.kh.project.vo.NutrientsVO;
 import com.kh.project.vo.SearchVO;
 
@@ -65,15 +66,6 @@ public class SearchDAO {
         Common.close(conn);
         return set;
     }
-
-    void printNutrients(TreeSet<NutrientsVO> set) {
-        for (NutrientsVO e : set) {
-            System.out.println("=".repeat(30));
-            System.out.println("영양제 : " + e.getNutrientsName());
-            if(e.getIngredientB() != null) System.out.println("성분 : " + e.getIngredientA() + ", " + e.getIngredientB());
-            else System.out.println("성분 : " + e.getIngredientA());
-            System.out.println("제조사 : " + e.getCompany());
-        }
-    }
+    
 }
 
