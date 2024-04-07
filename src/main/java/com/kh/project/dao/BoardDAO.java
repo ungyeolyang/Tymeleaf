@@ -1,7 +1,5 @@
 package com.kh.project.dao;
-
 import com.kh.project.common.Common;
-import com.kh.project.controller.Controller;
 import com.kh.project.vo.BoardVO;
 import com.kh.project.vo.MemberVO;
 import com.kh.project.vo.NutrientsVO;
@@ -19,6 +17,315 @@ public class BoardDAO {
     Statement stmt = null;
     ResultSet rs = null;
 
+    public boolean checkMine(String str,String id){
+        String query = "SELECT USER_ID FROM BOARD WHERE NUTRIENTS_NAME = '" + str + "'";
+        String mine = null;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                mine = rs.getString("USER_ID");
+            }
+            if(mine == null) return true;
+            else if(mine.equals(id)){
+                return false;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return true;
+    }
+    public String  checkComment(String str){
+        String query = "SELECT USER_ID FROM BOARD WHERE NUTRIENTS_NAME = '" + str + "'";
+        String mine = null;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                mine = rs.getString("USER_ID");
+            }
+            if(mine == null){
+                return "댓글이 존재하지 않습니다.";
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return null;
+    }
+    public boolean checkCommentGood(int num, String id){
+        List<String> list = new ArrayList<>();
+        String str = null;
+        String query = "SELECT * FROM GOODBOARD WHERE USER_ID = '" + id + "' AND COMMENT_NO = '" + num + "'" ;
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(query);
+            if (rs.next()){
+                return false;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return true;
+    }
+
+    public String checkComment(int num, String str,String id){
+        String query = "SELECT USER_ID FROM BOARD WHERE NUTRIENTS_NAME = '" + str + "' AND COMMENT_NO = '" + num + "'" ;
+        String mine = null;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                mine = rs.getString("USER_ID");
+            }
+            if (mine == null) {
+                return "존재하지 않는 댓글입니다.";
+            }
+            else if (mine.equals(id)){
+                return "본인의 댓글입니다.";
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return null;
+    }
+
+    public void commentGood(int num,String id){
+        String query = "INSERT INTO GOODBOARD VALUES(" + num + ",'" + id +"')";
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+        System.out.println("추천이 완료되었습니다.");
+    }
+
+    public boolean checkCommentBad(int num, String id){
+        String query = "SELECT * FROM BADBOARD WHERE USER_ID = '" + id + "' AND COMMENT_NO = '" + num + "'" ;
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(query);
+            if (rs.next()){
+                return false;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return true;
+    }
+    public int checkGood(int num){
+        int good = 0;
+        String query = "SELECT COUNT(COMMENT_NO) AS COUNT FROM GOODBOARD " +
+                " WHERE COMMENT_NO =" + num;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                good = rs.getInt("COUNT");
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return good;
+    }
+
+    public void updateGoodBoard(int num, int cnum){
+        String query = "UPDATE BOARD SET GOOD =" + num + " WHERE COMMENT_NO = " + cnum;
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
+
+    public void commentBad(int num,String id){
+        String query = "INSERT INTO BADBOARD VALUES(" + num + ",'" + id + "')";
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+        System.out.println("신고가 완료되었습니다.");
+    }
+    public int checkBad(int num){
+        int bad = 0;
+        String query = "SELECT COUNT(COMMENT_NO) AS COUNT FROM BADBOARD " +
+                " WHERE COMMENT_NO =" + num;
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                bad = rs.getInt("COUNT");
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return bad;
+    }
+    public void updateBadBoard(int num, int cnum){
+        String query = "UPDATE BOARD SET BAD =" + num + " WHERE COMMENT_NO = " + cnum;
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
+
+    public void deleteBad(int num){
+        String query = "DELETE FROM BADBOARD WHERE COMMENT_NO =" + num;
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
+    public void deleteGood(int num){
+        String query = "DELETE FROM GOODBOARD WHERE COMMENT_NO =" + num;
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
+    public void deleteBadAll(String id){
+        String query = "DELETE FROM BADBOARD WHERE USER_ID = '" + id+"'";
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
+    public void deleteGoodAll(String id){
+        String query = "DELETE FROM GOODBOARD WHERE USER_ID = '" + id+"'";
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
     public String checkNut(String name){
         List<String> list = new ArrayList<>();
 
@@ -99,25 +406,109 @@ public class BoardDAO {
         return set;
     }
 
-    public List<BoardVO> boardList(String data) {
+    public List<BoardVO> boardList(String str) {
         List<BoardVO> list = new ArrayList<>();
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
 
-            String query = "SELECT USER_NICK,RPAD(SUBSTR(USER_ID,1,3),LENGTH (USER_ID),'*') AS USER_ID,CONTENT " +
-                    "FROM BOARD WHERE NUTRIENTS_NAME LIKE '%" + data +"%'";
+            String query = "SELECT COMMENT_NO,USER_NICK,RPAD(SUBSTR(USER_ID,1,3),LENGTH (USER_ID),'*') AS \"USER_ID\",CONTENT,GOOD,BAD " +
+                    "FROM BOARD WHERE NUTRIENTS_NAME LIKE '%" + str + "%'";
 
             rs = stmt.executeQuery(query);
             while (rs.next()) {
                 BoardVO voB = new BoardVO();
+                String num = rs.getString("COMMENT_NO");
                 String nick = rs.getString("USER_NICK");
                 String id = rs.getString("USER_ID");
                 String content = rs.getString("CONTENT");
+                int good = rs.getInt("GOOD");
+                int bad = rs.getInt("BAD");
 
+                voB.setCommentNo(num);
                 voB.setUserNick(nick);
                 voB.setUserId(id);
                 voB.setContent(content);
+                voB.setGood(good);
+                voB.setBad(bad);
+
+                list.add(voB);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return list;
+    }
+    public List<BoardVO> goodBoardList(MemberVO memberVO) {
+        List<BoardVO> list = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            String query = "SELECT NUTRIENTS_NAME,COMMENT_NO,USER_NICK,RPAD(SUBSTR(USER_ID,1,3),LENGTH (USER_ID),'*') AS \"USER_ID\",CONTENT,GOOD,BAD " +
+                    "FROM BOARD WHERE COMMENT_NO IN(SELECT COMMENT_NO FROM GOODBOARD WHERE USER_ID = '" + memberVO.getId() + "')";
+
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                BoardVO voB = new BoardVO();
+                String name = rs. getString("NUTRIENTS_NAME");
+                String num = rs.getString("COMMENT_NO");
+                String nick = rs.getString("USER_NICK");
+                String id = rs.getString("USER_ID");
+                String content = rs.getString("CONTENT");
+                int good = rs.getInt("GOOD");
+                int bad = rs.getInt("BAD");
+
+                voB.setNutrientsName(name);
+                voB.setCommentNo(num);
+                voB.setUserNick(nick);
+                voB.setUserId(id);
+                voB.setContent(content);
+                voB.setGood(good);
+                voB.setBad(bad);
+
+                list.add(voB);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return list;
+    }
+    public List<BoardVO> badBoardList(MemberVO memberVO) {
+        List<BoardVO> list = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            String query = "SELECT NUTRIENTS_NAME,COMMENT_NO,USER_NICK,RPAD(SUBSTR(USER_ID,1,3),LENGTH (USER_ID),'*') AS \"USER_ID\",CONTENT,GOOD,BAD " +
+                    "FROM BOARD WHERE COMMENT_NO IN(SELECT COMMENT_NO FROM BADBOARD WHERE USER_ID = '" + memberVO.getId() + "')";
+
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                BoardVO voB = new BoardVO();
+                String name = rs. getString("NUTRIENTS_NAME");
+                String num = rs.getString("COMMENT_NO");
+                String nick = rs.getString("USER_NICK");
+                String id = rs.getString("USER_ID");
+                String content = rs.getString("CONTENT");
+                int good = rs.getInt("GOOD");
+                int bad = rs.getInt("BAD");
+
+                voB.setNutrientsName(name);
+                voB.setCommentNo(num);
+                voB.setUserNick(nick);
+                voB.setUserId(id);
+                voB.setContent(content);
+                voB.setGood(good);
+                voB.setBad(bad);
 
                 list.add(voB);
             }
@@ -183,8 +574,8 @@ public class BoardDAO {
     public void comment(NutrientsVO voNu,MemberVO voMem, String content){
         String query = null;
         query = "INSERT INTO BOARD VALUES (SEQ_COMMENT.NEXTVAL, '"
-                + voNu.getNutrientsName() + "', '"+ voMem.getId() +"' , '" + voMem.getNick()  +
-                  "' , '" + content + "')";
+                + voNu.getNutrientsName() + "', '" + voMem.getId() + "' , '" +
+                voMem.getNick() + "' , '" + content + "', 0 , 0)";
 
         try {
             conn = Common.getConnection();
@@ -258,26 +649,35 @@ public class BoardDAO {
         Common.close(conn);
     }
 
-    void printBoard(NutrientsVO vo, HashSet<String> set, List<BoardVO> list) {
-        System.out.println(vo.getNutrientsName());
-        System.out.println("=".repeat(10));
-        if(vo.getIngredientB() != null) System.out.println("성분 : " + vo.getIngredientA() + ", " + vo.getIngredientB());
-        else System.out.println("성분 : " + vo.getIngredientA());
-        System.out.println("효능 : " + set.toString().replace("[","").replace("]",""));
-        System.out.println("제조사 : " + vo.getCompany());
-        System.out.println("복용법 : " + vo.getHowToTake() + " ");
-        if(!list.isEmpty()) {
-            for (BoardVO e : list) {
-                System.out.println("=".repeat(30));
-                System.out.println(e.getUserNick() + "(" + e.getUserId() +") : " + e.getContent());
-            }
+    public void deleteMyGood(int num,String id) {
+        String query = "DELETE FROM GOODBOARD WHERE COMMENT_NO =" + num + "AND USER_ID = '"+ id+"'";
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
+    public void deleteMyBad(int num,String id) {
+        String query = "DELETE FROM BABOARD WHERE COMMENT_NO =" + num + "AND USER_ID = '"+ id+"'";
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
     }
 
-    void printMyContent(List<BoardVO> list) {
-        for (BoardVO e : list) {
-            System.out.println("=".repeat(30));
-            System.out.println(e.getCommentNo()+" / " + e.getNutrientsName() +" : " + e.getContent());
-        }
-    }
 }

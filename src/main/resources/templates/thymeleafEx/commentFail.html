@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>탈퇴 확인</title>
+    <title>댓글 알림창</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body class="container">
 <div class="form-container">
-    <h1>정말 회원탈퇴를 진행하시겠습니까?</h1>
-    <form th:action="@{/emp/delMyInfo}">
+    <form th:action="@{/emp/main}">
+        <p th:text="${fail}"></p>
         <div>
             <button type="submit">확인</button>
-        </div>
-    </form>
-    <form th:action="@{/emp/main}">
-        <div>
-            <button type="submit">돌아가기</button>
         </div>
     </form>
 </div>

@@ -32,12 +32,6 @@
             border-radius: 5px; /* 테두리 반경 설정 */
         }
 
-        /* 수평 목록 스타일 */
-        .horizontal-list li {
-            display: inline-block; /* 인라인 블록 요소로 배치 */
-            margin-right: 10px; /* 오른쪽 여백 지정 */
-        }
-
         /* 레이블 스타일 */
         label {
             display: block; /* 블록 요소로 설정하여 줄 바꿈되도록 함 */

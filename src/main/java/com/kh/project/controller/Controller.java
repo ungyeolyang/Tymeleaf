@@ -142,16 +142,90 @@ public class Controller {
     }
 
     @GetMapping("/comment")
-    public String Comment(Model model) {
+    public String Comment(Model model,HttpSession session) {
+        MemberVO memberVO = (MemberVO)session.getAttribute("userInfo");
+        NutrientsVO nutrientsVO = (NutrientsVO)session.getAttribute("userNu");
+        if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
+            model.addAttribute("fail", "이미 작성한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
         model.addAttribute("comment", new SearchVO());
         return "thymeleafEx/comment";
     }
 
     @PostMapping("/comment")
-    public String CheckComment(@ModelAttribute("comment") SearchVO searchVO, HttpSession session) {
+    public String checkComment(@ModelAttribute("comment") SearchVO searchVO, HttpSession session,Model model) {
         NutrientsVO nutrientsVO = (NutrientsVO) session.getAttribute("userNu");
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        if (searchVO.getData().isEmpty()) {
+            model.addAttribute("fail", "내용을 입력하세요.");
+            return "thymeleafEx/commentFail";
+        }
         boardDAO.comment(nutrientsVO, memberVO, searchVO.getData());
+        return "thymeleafEx/main";
+    }
+
+    @GetMapping("/commentGood")
+    public String CommentGood(Model model,HttpSession session) {
+        MemberVO memberVO = (MemberVO)session.getAttribute("userInfo");
+        NutrientsVO nutrientsVO = (NutrientsVO)session.getAttribute("userNu");
+        if(boardDAO.checkComment(nutrientsVO.getNutrientsName())!= null) {
+            model.addAttribute("fail", boardDAO.checkComment(nutrientsVO.getNutrientsName()) );
+            return "thymeleafEx/commentFail";
+        }
+        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
+            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        model.addAttribute("commentGood", new SearchVO());
+        return "thymeleafEx/commentGood";
+    }
+
+    @PostMapping("/commentGood")
+    public String CheckCommentGood(@ModelAttribute("comment") SearchVO searchVO, HttpSession session,Model model) {
+        NutrientsVO nutrientsVO = (NutrientsVO) session.getAttribute("userNu");
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        if(!boardDAO.checkCommentGood(searchVO.getNumber(),memberVO.getId())){
+            model.addAttribute("fail", "이미 추천한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        else boardDAO.commentGood(searchVO.getNumber(),memberVO.getId());
+        boardDAO.updateGoodBoard(boardDAO.checkGood(searchVO.getNumber()),searchVO.getNumber());
+        return "thymeleafEx/main";
+    }
+    @GetMapping("/commentBad")
+    public String CommentBad(Model model,HttpSession session) {
+        MemberVO memberVO = (MemberVO)session.getAttribute("userInfo");
+        NutrientsVO nutrientsVO = (NutrientsVO)session.getAttribute("userNu");
+        if(boardDAO.checkComment(nutrientsVO.getNutrientsName())!= null) {
+            model.addAttribute("fail", boardDAO.checkComment(nutrientsVO.getNutrientsName()) );
+            return "thymeleafEx/commentFail";
+        }
+        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
+            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        model.addAttribute("comment", new SearchVO());
+        return "thymeleafEx/commentBad";
+    }
+
+    @PostMapping("/commentBad")
+    public String CheckCommentBad(@ModelAttribute("comment") SearchVO searchVO, HttpSession session,Model model) {
+        NutrientsVO nutrientsVO = (NutrientsVO) session.getAttribute("userNu");
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        if(!boardDAO.checkCommentBad(searchVO.getNumber(),memberVO.getId())){
+            model.addAttribute("fail", "이미 비추천한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        else boardDAO.commentBad(searchVO.getNumber(),memberVO.getId());
+        boardDAO.updateBadBoard(boardDAO.checkBad(searchVO.getNumber()),searchVO.getNumber());
+        if(boardDAO.checkBad(searchVO.getNumber()) > 2) {
+            boardDAO.deleteBad(searchVO.getNumber());
+            boardDAO.deleteGood(searchVO.getNumber());
+            boardDAO.deleteContent(searchVO.getNumber());
+            model.addAttribute("fail", "비추천 누적으로 댓글이 삭제되었습니다.");
+            return "thymeleafEx/commentFail";
+        }
         return "thymeleafEx/main";
     }
 
@@ -200,30 +274,100 @@ public class Controller {
     @GetMapping("/myComment")
     public String myComment(HttpSession session, Model model) {
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
-        model.addAttribute("myComment", boardDAO.searchBoard(memberVO));
+        List<BoardVO> myList= boardDAO.searchBoard(memberVO);
+        List<BoardVO> myGoodList= boardDAO.goodBoardList(memberVO);
+        List<BoardVO> myBadList= boardDAO.badBoardList(memberVO);
+        if(myList.isEmpty() & myGoodList.isEmpty() & myBadList.isEmpty()) {
+            model.addAttribute("fail","댓글이 존재하지 않습니다.");
+            return "thymeleafEx/commentFail";
+        }
+        model.addAttribute("myComment", myList);
+        model.addAttribute("myGoodComment", myGoodList);
+        model.addAttribute("myBadComment", myBadList);
         return "thymeleafEx/myComment";
     }
 
     @GetMapping("/modComment")
-    public String modComment(Model model) {
+    public String modComment(Model model,HttpSession session) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        List<BoardVO> myList= boardDAO.searchBoard(memberVO);
         model.addAttribute("modComment", new SearchVO());
+        if(myList.isEmpty()) {
+            model.addAttribute("fail","작성한 댓글이 없습니다.");
+            return "thymeleafEx/commentFail";
+        }
         return "thymeleafEx/modComment";
     }
 
     @PostMapping("/modComment")
-    public String checkModComment(@ModelAttribute("modComment") SearchVO searchVO) {
+    public String checkModComment(@ModelAttribute("modComment") SearchVO searchVO,Model model) {
+        if (!boardDAO.checkMyContent(searchVO.getNumber())) {
+            model.addAttribute("fail","내가 작성한 댓글이 존재하지 않습니다.");
+            return "thymeleafEx/commentFail";
+        }
+        else if(searchVO.getData().isEmpty()) {
+            model.addAttribute("fail","내용을 입력하세요");
+            return "thymeleafEx/commentFail";
+        }
         boardDAO.updateContent(searchVO.getNumber(), searchVO.getData());
         return "thymeleafEx/main";
+
     }
 
     @GetMapping("/delComment")
-    public String delComment(Model model) {
+    public String delComment(Model model,HttpSession session) {
         model.addAttribute("delComment", new SearchVO());
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        List<BoardVO> myList= boardDAO.searchBoard(memberVO);
+        if(myList.isEmpty()) {
+            model.addAttribute("fail","작성한 댓글이 없습니다.");
+            return "thymeleafEx/commentFail";
+        }
         return "thymeleafEx/delComment";
     }
     @PostMapping("/delComment")
-    public String checkDelComment(@ModelAttribute("modComment") SearchVO searchVO) {
+    public String checkDelComment(@ModelAttribute("delComment") SearchVO searchVO,Model model) {
+        if (!boardDAO.checkMyContent(searchVO.getNumber())) {
+            model.addAttribute("fail","내가 작성한 댓글이 존재하지 않습니다.");
+            return "thymeleafEx/commentFail";
+        }
         boardDAO.deleteContent(searchVO.getNumber());
+        boardDAO.deleteBad(searchVO.getNumber());
+        boardDAO.deleteGood(searchVO.getNumber());
         return "thymeleafEx/main";
+    }
+
+    @GetMapping("/canComment")
+    public String canComment(Model model,HttpSession session) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        List<BoardVO> myGoodList= boardDAO.goodBoardList(memberVO);
+        List<BoardVO> myBadList= boardDAO.badBoardList(memberVO);
+        model.addAttribute("canComment", new SearchVO());
+        if(myGoodList.isEmpty() & myBadList.isEmpty()) {
+            model.addAttribute("fail","취소할 댓글이 없습니다.");
+            return "thymeleafEx/commentFail";
+        }
+        return "thymeleafEx/canComment";
+    }
+
+    @PostMapping("/canComment")
+    public String checkcanComment(@ModelAttribute("canComment") SearchVO searchVO,HttpSession session,Model model) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        if (!boardDAO.checkCommentGood(searchVO.getNumber(),memberVO.getId())){
+            boardDAO.deleteMyGood(searchVO.getNumber(),memberVO.getId());
+            boardDAO.updateGoodBoard(boardDAO.checkGood(searchVO.getNumber()),searchVO.getNumber());
+            model.addAttribute("fail","추천을 취소하였습니다. ");
+            return "thymeleafEx/commentFail";
+        }
+        else if(!boardDAO.checkCommentBad(searchVO.getNumber(),memberVO.getId())) {
+            boardDAO.deleteMyBad(searchVO.getNumber(),memberVO.getId());
+            boardDAO.updateBadBoard(boardDAO.checkBad(searchVO.getNumber()),searchVO.getNumber());
+            model.addAttribute("fail","비추천을 취소하였습니다. ");
+            return "thymeleafEx/commentFail";
+        }
+        else {
+            model.addAttribute("fail","취소할 댓글이 존재하지 않습니다.");
+            return "thymeleafEx/commentFail";
+        }
     }
 }

@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>탈퇴 확인</title>
+    <title>추천창</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body class="container">
 <div class="form-container">
-    <h1>정말 회원탈퇴를 진행하시겠습니까?</h1>
-    <form th:action="@{/emp/delMyInfo}">
+    <h1>추천</h1>
+    <form th:action="@{/emp/commentGood}" th:object="${commentGood}" method="post">
+        <div>
+            <label for="number">추천할 글번호를 입력하세요</label>
+            <input type="text" id="number" th:field="*{number}" />
+        </div>
         <div>
             <button type="submit">확인</button>
         </div>
     </form>
-    <form th:action="@{/emp/main}">
+    <form th:action="@{/emp/myComment}">
         <div>
             <button type="submit">돌아가기</button>
         </div>
