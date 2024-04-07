@@ -15,4 +15,6 @@ public class BoardVO {
     private String userId;
     private String content;
     private String userNick;
+    private int good;
+    private int bad;
 }

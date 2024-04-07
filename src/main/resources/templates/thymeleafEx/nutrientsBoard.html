@@ -18,14 +18,27 @@
     <li th:text="${'효능 :' + efficacys}"></li>
 </ul>
 <ul th:each="com : ${comments}">
+    <li  th:text="${com.commentNo +' / '}"></li>
     <li  th:text="${com.userNick}"></li>
     <li  th:text="${'('+ com.userId + ')'}"></li>
     <li  th:text="${com.content}"></li>
+    <li  th:text="${'좋아요 : ' + com.good}"></li>
+    <li  th:text="${'싫어요 : ' + com.bad}"></li>
 </ul>
 
 <form th:action="@{/emp/comment}">
     <div>
         <button type="submit">댓글 쓰기</button>
+    </div>
+</form>
+<form th:action="@{/emp/commentGood}">
+    <div>
+        <button type="submit">추천하기</button>
+    </div>
+</form>
+<form th:action="@{/emp/commentBad}">
+    <div>
+        <button type="submit">비추천하기</button>
     </div>
 </form>
 <form th:action="@{/emp/main}">

@@ -104,12 +104,18 @@ public class MyInfoDAO {
         Common.close(conn);
     }
     public void deleteMyInfo(MemberVO memberVO) {
+        BoardDAO board = new BoardDAO();
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
             String query = "DELETE FROM MEMBER WHERE USER_ID = '" + memberVO.getId() + "'";
             int ret = stmt.executeUpdate(query);
             System.out.println("Return : " + ret);
+            String query1 = "DELETE FROM BOARD WHERE USER_ID = '" + memberVO.getId() + "'";
+            int ret1 = stmt.executeUpdate(query1);
+            System.out.println("Return : " + ret1);
+            board.deleteBadAll(memberVO.getId());
+            board.deleteGoodAll(memberVO.getId());
 
         } catch (Exception e) {
             e.printStackTrace();
