@@ -9,30 +9,25 @@
     <h1>회원가입</h1>
     <form th:action="@{/emp/regist}" th:object="${regmembers}" method="post">
         <div>
-            <label for="name">이름</label>
-            <input type="text" id="name" th:field="*{name}" />
+            <input type="text" id="name" th:field="*{name}" placeholder="이름"/>
         </div>
         <div>
-            <label for="jumin">주민등록번호</label>
-            <input type="text" id="jumin" th:field="*{jumin}" />
+            <input type="text" id="jumin" th:field="*{jumin}" placeholder="주민등록번호"/>
         </div>
         <div>
-            <label for="id">아이디</label>
-            <input type="text" id="id" th:field="*{id}" />
+            <input type="text" id="id" th:field="*{id}" placeholder="아이디"/>
         </div>
         <div>
-            <label for="pw">비밀번호</label>
-            <input type="text" id="pw" th:field="*{pw}" />
+            <input type="text" id="pw" th:field="*{pw}" placeholder="비밀번호"/>
         </div>
         <div>
-            <label for="nick">닉네임</label>
-            <input type="text" id="nick" th:field="*{nick}" />
+            <input type="text" id="nick" th:field="*{nick}" placeholder="닉네임"/>
         </div>
         <div>
             <button type="submit">등록</button>
         </div>
     </form>
-    <form th:action="@{/emp/start}" th:object="${members}" method="post">
+    <form th:action="@{/emp/start}">
         <div>
             <button type="submit">뒤로가가</button>
         </div>

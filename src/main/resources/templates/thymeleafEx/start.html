@@ -3,33 +3,52 @@
 <head>
     <title>시작화면</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .header-title {
+            font-size: 48px;
+            color: #7b68ee;
+            margin-bottom: 20px;
+        }
+        /* 화면의 높이에 맞게 설정 */
+        .container {
+            height: 100vh; /* 화면 높이의 100%로 설정 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .links a {
+            color: #999; /* 회색 링크 색상 */
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .links a:hover {
+            color: #666; /* 호버 시 약간 더 어두운 회색 */
+        }
+    </style>
 </head>
+
 <body class="container">
 <div class="form-container">
-    <h1> 로그인 </h1>
-    <form th:action="@{/emp/start}" th:object="${logmembers}" method="post">
-        <div>
-            <label for="id">아이디</label>
-            <input type="text" id="id" th:field="*{id}" />
+    <h1 class="header-title">꿀꺽</h1>
+    <br>
+    <h2>로그인</h2>
+    <form th:action="@{/emp/start}" th:object="${logmembers}" method="post" id="loginForm">
+        <div class="input-group">
+            <input type="text" id="id" th:field="*{id}" placeholder="아이디" />
+            <input type="password" id="pw" th:field="*{pw}" placeholder="비밀번호" />
         </div>
-        <div>
-            <label for="pw">비밀번호</label>
-            <input type="text" id="pw" th:field="*{pw}" />
-        </div>
-        <div>
-            <button type="submit">로그인</button>
+        <div class="input-group">
+            <button type="submit" id="loginButton" style="background-color: #7b68ee; color: #fff;">로그인</button>
         </div>
     </form>
-    <form th:action="@{/emp/findIdPw}">
-        <div>
-            <button type="submit">아이디/비밀번호 찾기</button>
-        </div>
-    </form>
-    <form th:action="@{/emp/regist}">
-        <div>
-            <button type="submit">회원가입</button>
-        </div>
-    </form>
+    <br>
+    <div class="links">
+        <a th:href="@{/emp/findIdPw}">로그인이 안되시나요?</a>
+    </div>
+    <div class="links">
+        <a th:href="@{/emp/regist}">계정생성</a>
+    </div>
 </div>
 </body>
 </html>

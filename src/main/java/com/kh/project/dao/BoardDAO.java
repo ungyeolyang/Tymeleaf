@@ -328,7 +328,6 @@ public class BoardDAO {
     }
     public String checkNut(String name){
         List<String> list = new ArrayList<>();
-
         String query = "SELECT NUTRIENTS_NAME FROM NUTRIENTS WHERE NUTRIENTS_NAME LIKE '%" + name + "%'";
         try {
             conn = Common.getConnection();

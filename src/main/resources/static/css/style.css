@@ -1,77 +1,103 @@
-/* 전체 테이블 스타일 */
-        table {
-            border-collapse: collapse; /* 테이블 셀 경계를 겹치도록 설정 */
-            width: 100%; /* 테이블이 부모 요소의 전체 너비를 차지하도록 설정 */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff; /* 흰색 배경 */
+            color: #333; /* 어두운 텍스트 색상 */
         }
 
-        /* 테이블 헤더와 셀 스타일 */
-        th, td {
-            border: 1px solid #ccc; /* 테두리 스타일 지정 */
-            padding: 8px; /* 셀 내부 여백 지정 */
-            text-align: left; /* 텍스트를 왼쪽으로 정렬 */
-        }
-
-        /* 셀 배경색 */
-        td {
-            background-color: beige;
-        }
-
-        /* 테이블 헤더 스타일 */
-        thead {
-            background-color: cornflowerblue; /* 배경색 지정 */
-            color: white; /* 텍스트 색상 지정 */
-        }
-
-        /* 폼 컨테이너 스타일 */
-        .form-container {
-            max-width: 400px; /* 최대 너비 설정 */
-            margin: 20px auto; /* 수직 중앙 정렬을 위한 마진 설정 */
-            padding: 20px; /* 안쪽 여백 지정 */
-            background-color: #f7f7f7; /* 배경색 설정 */
-            border: 1px solid #ddd; /* 테두리 설정 */
-            border-radius: 5px; /* 테두리 반경 설정 */
-        }
-
-        /* 레이블 스타일 */
-        label {
-            display: block; /* 블록 요소로 설정하여 줄 바꿈되도록 함 */
-            margin-bottom: 5px; /* 아래쪽 여백 지정 */
-        }
-
-        /* 입력 필드 스타일 */
-        input[type="text"],
-        input[type="date"] {
-            width: 100%; /* 최대 너비 설정 */
-            padding: 10px; /* 안쪽 여백 설정 */
-            margin-bottom: 15px; /* 아래쪽 여백 지정 */
-            border: 1px solid #ccc; /* 테두리 설정 */
-            border-radius: 3px; /* 테두리 반경 설정 */
-        }
-
-        /* 제출 버튼 스타일 */
-        button[type="submit"] {
-            background-color: #007bff; /* 배경색 설정 */
-            color: #fff; /* 텍스트 색상 설정 */
-            padding: 10px 20px; /* 안쪽 여백 설정 */
-            margin-right: 10px; /* 오른쪽 여백 설정 */
-            border: none; /* 테두리 없음 */
-            border-radius: 3px; /* 테두리 반경 설정 */
-            cursor: pointer; /* 커서 모양 변경 */
-        }
-
-        /* 제출 버튼 호버 효과 */
-        button[type="submit"]:hover {
-            background-color: #0056b3; /* 호버시 배경색 변경 */
-        }
-
-        /* 배경 이미지 컨테이너 스타일 */
         .container {
-            background-image: url('../images/bg.jpg'); /* 배경 이미지 경로 설정 */
-            background-size: cover; /* 이미지가 화면에 맞게 확대/축소되도록 설정 */
-            background-repeat: no-repeat; /* 이미지 반복 없음 */
-            background-attachment: fixed; /* 스크롤 시 배경 이미지가 고정됨 */
-            min-height: 100vh; /* 최소 높이 설정 */
-            display: flex; /* 컨테이너 내부의 자식 요소를 행렬로 배치 */
-            align-items: center; /* 수직 정렬 */
-            justify-content: center; /* 수평 정렬 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
+
+        .form-container {
+            background-color: #fff; /* 흰색 배경 */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input, .input-group button {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0; /* 밝은 회색 배경 */
+            color: #333; /* 어두운 텍스트 색상 */
+        }
+
+        input[type="text"]{
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0; /* 밝은 회색 배경 */
+            color: #333; /* 어두운 텍스트 색상 */
+            margin-bottom: 20px;
+        }
+
+        .input-group input::placeholder {
+            color: #999; /* 플레이스홀더 텍스트 색상 */
+        }
+
+        input[type="text"]::placeholder{
+                    color: #999; /* 플레이스홀더 텍스트 색상 */
+        }
+
+    .input-group button {
+        margin-top: 8px;
+        background-color: #7b68ee; /* 보라색 */
+        color: #fff; /* 흰색 텍스트 색상 */
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .input-group:hover button {
+        background-color: #6a5acd; /* 호버 시 약간 더 어두운 보라색 */
+    }
+
+        .links {
+            margin-top: 20px;
+        }
+
+        .links a {
+            color: #7b68ee; /* 보라색 링크 색상 */
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .links a:hover {
+            color: #6a5acd; /* 호버 시 약간 더 어두운 보라색 */
+        }
+
+    button[type="submit"] {
+        background-color: #7b68ee;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #6a5acd;
+    }
