@@ -7,6 +7,7 @@ import com.kh.project.vo.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,18 +86,10 @@ public class Controller {
         return "thymeleafEx/findPwRst";
     }
     @GetMapping("/main")
-    public String main(Model model) {
-        SearchVO searchVO = new SearchVO();
-        searchVO.setNumber(1);
-        model.addAttribute("searchAll", searchVO);
+    public String main() {
         return "thymeleafEx/main";
     }
-    @PostMapping("/main")
-    public String Checkmain(@ModelAttribute("searchAll") SearchVO searchVO,Model model) {
-        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
-        model.addAttribute("ingredients", searchDAO.search(searchVO));
-        return "thymeleafEx/nutrientsList";
-    }
+
 
     @GetMapping("/searchIn")
     public String SearchIn(Model model) {

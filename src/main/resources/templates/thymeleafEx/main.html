@@ -2,7 +2,6 @@
     <!DOCTYPE html>
     <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>메인페이지</title>
         <link rel="stylesheet" th:href="@{/css/style.css}">
         <style>
             .form-container {
@@ -19,18 +18,6 @@
     <body class="container">
     <div class="form-container">
         <h1>메인페이지</h1>
-        <form th:action="@{/emp/main}" th:object="${searchAll}" method="post">
-            <div>
-                <input type="hidden" id="searchType" name="searchType" th:value="${number}">
-                <select name="searchType">
-                    <option value="1" th:selected="${number == 1}">성분 검색</option>
-                    <option value="2" th:selected="${number == 2}">효능 검색</option>
-                </select>
-                <input type="text" id="data" th:field="*{data}" placeholder="검색어 입력" />
-                <input type="hidden" id="number" th:value="${number}" />
-                <button type="submit">검색</button>
-            </div>
-        </form>
     <form th:action="@{/emp/mypage}">
         <div>
             <button type="submit">마이페이지</button>
