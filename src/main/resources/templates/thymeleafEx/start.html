@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:font-size="http://www.w3.org/1999/xhtml">
 <head>
-    <title>시작화면</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
         .header-title {
             font-size: 48px;
             color: #7b68ee;
             margin-bottom: 20px;
+
         }
         /* 화면의 높이에 맞게 설정 */
         .container {
@@ -25,14 +25,25 @@
         .links a:hover {
             color: #666; /* 호버 시 약간 더 어두운 회색 */
         }
+        .inline{
+        display:inline-block
+        }
+
     </style>
 </head>
 
 <body class="container">
+
 <div class="form-container">
-    <h3 class="header-title">꿀꺽</h3>
+    <div class="inline">
+        <h1 class="header-title">
+            <a href="https://imgbb.com/">
+                <img width="90px" height="40px" src="https://i.ibb.co/LnRKD5D/ggulgguk.png" alt="ggulgguk" >
+            </a>꿀꺽
+        </h1>
+    </div>
+
     <br>
-    <h2>로그인</h2>
     <form th:action="@{/emp/start}" th:object="${logmembers}" method="post" id="loginForm">
         <div class="input-group">
             <input type="text" id="id" th:field="*{id}" placeholder="아이디" />

@@ -90,36 +90,35 @@ public class Controller {
         return "thymeleafEx/main";
     }
 
-
-    @GetMapping("/searchIn")
-    public String SearchIn(Model model) {
+    @GetMapping("/search")
+    public String Search(Model model) {
         SearchVO searchVO = new SearchVO();
         searchVO.setNumber(1);
-        model.addAttribute("searchIn", searchVO);
-        return "thymeleafEx/searchIn";
+        model.addAttribute("search", searchVO);
+        return "thymeleafEx/search";
     }
 
-    @PostMapping("/searchIn")
-    public String CheckSearchIn(@ModelAttribute("searchIn") SearchVO searchVO, Model model) {
+    @PostMapping("/search")
+    public String CheckSearch(@ModelAttribute("search") SearchVO searchVO, Model model) {
         if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
         model.addAttribute("ingredients", searchDAO.search(searchVO));
         return "thymeleafEx/nutrientsList";
     }
 
-    @GetMapping("/searchEf")
-    public String SearchEf(Model model) {
-        SearchVO searchVO = new SearchVO();
-        searchVO.setNumber(2);
-        model.addAttribute("searchEf", searchVO);
-        return "thymeleafEx/searchEf";
-    }
-
-    @PostMapping("/searchEf")
-    public String CheckSearchEf(@ModelAttribute("searchEf") SearchVO searchVO, Model model) {
-        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
-        model.addAttribute("ingredients", searchDAO.search(searchVO));
-        return "thymeleafEx/nutrientsList";
-    }
+//    @GetMapping("/searchEf")
+//    public String SearchEf(Model model) {
+//        SearchVO searchVO = new SearchVO();
+//        searchVO.setNumber(2);
+//        model.addAttribute("searchEf", searchVO);
+//        return "thymeleafEx/searchEf";
+//    }
+//
+//    @PostMapping("/searchEf")
+//    public String CheckSearchEf(@ModelAttribute("searchEf") SearchVO searchVO, Model model) {
+//        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
+//        model.addAttribute("ingredients", searchDAO.search(searchVO));
+//        return "thymeleafEx/nutrientsList";
+//    }
 
     @GetMapping("/searchNu")
     public String SearchNu(Model model) {
@@ -175,10 +174,6 @@ public class Controller {
             model.addAttribute("fail", boardDAO.checkComment(nutrientsVO.getNutrientsName()) );
             return "thymeleafEx/commentFail";
         }
-        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
-            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
-            return "thymeleafEx/commentFail";
-        }
         model.addAttribute("commentGood", new SearchVO());
         return "thymeleafEx/commentGood";
     }
@@ -189,6 +184,10 @@ public class Controller {
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
         if(!boardDAO.checkCommentGood(searchVO.getNumber(),memberVO.getId())){
             model.addAttribute("fail", "이미 추천한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
+            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
             return "thymeleafEx/commentFail";
         }
         else boardDAO.commentGood(searchVO.getNumber(),memberVO.getId());
@@ -204,10 +203,6 @@ public class Controller {
             model.addAttribute("fail", boardDAO.checkComment(nutrientsVO.getNutrientsName()) );
             return "thymeleafEx/commentFail";
         }
-        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
-            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
-            return "thymeleafEx/commentFail";
-        }
         model.addAttribute("comment", new SearchVO());
         return "thymeleafEx/commentBad";
     }
@@ -218,6 +213,10 @@ public class Controller {
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
         if(!boardDAO.checkCommentBad(searchVO.getNumber(),memberVO.getId())){
             model.addAttribute("fail", "이미 비추천한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
+            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
             return "thymeleafEx/commentFail";
         }
         else boardDAO.commentBad(searchVO.getNumber(),memberVO.getId());
