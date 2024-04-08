@@ -17,8 +17,8 @@ public class BoardDAO {
     Statement stmt = null;
     ResultSet rs = null;
 
-    public boolean checkMine(String str,String id){
-        String query = "SELECT USER_ID FROM BOARD WHERE NUTRIENTS_NAME = '" + str + "'";
+    public boolean checkMine(int num ,String id){
+        String query = "SELECT USER_ID FROM BOARD WHERE COMMENT_NO = '" + num + "'";
         String mine = null;
         try {
             conn = Common.getConnection();
