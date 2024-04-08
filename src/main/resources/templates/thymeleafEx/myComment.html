@@ -17,57 +17,63 @@
 </head>
 <body class="myCommentcontainer">
 <div class="form-container">
-<h1 class = header-title>작성한 댓글</h1>
-<div th:each="my : ${myComment}">
-    <div>
-        <strong><span th:text="${my.commentNo + ' - '}"></span>
-        <span th:text="${my.nutrientsName}"></span></strong>
-        <span th:text="${' : ' + my.content + '   '}"></span><br>
-        <span th:text="${'좋아요 : ' + my.good +' / '}"></span>
-        <span th:text="${'싫어요 : ' + my.bad}"></span><br>
+    <h1 class = header-title>작성한 댓글</h1>
+    <hr>
+    <div th:each="my : ${myComment}">
+        <div>
+            <strong><span th:text="${my.commentNo + ' - '}"></span>
+                <span th:text="${my.nutrientsName}"></span></strong>
+            <span th:text="${' : ' + my.content + '   '}"></span><br>
+            <span th:text="${'좋아요 : ' + my.good +' / '}"></span>
+            <span th:text="${'싫어요 : ' + my.bad}"></span><br>
+        </div>
+        <hr> <!-- Horizontal line after each set of comments -->
     </div>
-</div>
 
-<form th:action="@{/emp/modComment}">
+    <form th:action="@{/emp/modComment}">
         <button type="submit">수정하기</button>
-</form>
-<form th:action="@{/emp/delComment}">
+    </form>
+    <form th:action="@{/emp/delComment}">
         <button type="submit">댓글삭제</button>
-</form>
+    </form>
 
-<h1 class = header-title>추천한 댓글</h1>
-<div th:each="myGood : ${myGoodComment}">
-    <div>
-        <span th:text="${myGood.commentNo + ' / '}"></span>
-        <span th:text="${myGood.nutrientsName + ' / '}"></span>
-        <span th:text="${myGood.userNick + ' (' + myGood.userId + ')'}"></span>
-        <span th:text="${' : ' + myGood.content + ' / '}"></span><br>
-        <span th:text="${'좋아요 : ' + myGood.good +' / '}"></span>
-        <span th:text="${'싫어요 : ' + myGood.bad}"></span><br>
+    <h1 class = header-title>추천한 댓글</h1>
+    <hr>
+    <div th:each="myGood : ${myGoodComment}">
+        <div>
+            <strong><span th:text="${myGood.commentNo + ' - '}"></span>
+            <span th:text="${myGood.nutrientsName + ' / '}"></span>
+            <span th:text="${myGood.userNick + ' (' + myGood.userId + ')'}"></span></strong>
+            <span th:text="${' : ' + myGood.content}"></span><br>
+            <span th:text="${'좋아요 : ' + myGood.good +' / '}"></span>
+            <span th:text="${'싫어요 : ' + myGood.bad}"></span><br>
+        </div>
+        <hr> <!-- Horizontal line after each set of comments -->
     </div>
-</div>
 
-<h1 class = header-title>비추천한 댓글</h1>
-<div th:each="myBad : ${myBadComment}">
-    <div>
-        <span th:text="${myBad.commentNo + ' / '}"></span>
-        <span th:text="${myBad.nutrientsName + ' / '}"></span>
-        <span th:text="${myBad.userNick + ' (' + myBad.userId + ')'}"></span>
-        <span th:text="${' : ' + myBad.content + ' / '}"></span><br>
-        <span th:text="${'좋아요 : ' + myBad.good +' / '}"></span>
-        <span th:text="${'싫어요 : ' + myBad.bad}"></span><br>
+    <h1 class = header-title>비추천한 댓글</h1>
+    <hr>
+    <div th:each="myBad : ${myBadComment}">
+        <div>
+            <strong><span th:text="${myBad.commentNo + ' - '}"></span>
+            <span th:text="${myBad.nutrientsName + ' / '}"></span>
+            <span th:text="${myBad.userNick + ' (' + myBad.userId + ')'}"></span></strong>
+            <span th:text="${' : ' + myBad.content}"></span><br>
+            <span th:text="${'좋아요 : ' + myBad.good +' / '}"></span>
+            <span th:text="${'싫어요 : ' + myBad.bad}"></span><br>
+        </div>
+        <hr> <!-- Horizontal line after each set of comments -->
     </div>
-</div>
 
 
-<form th:action="@{/emp/canComment}">
-    <div>
-        <button type="submit">추천/비추천 취소</button>
-    </div>
-</form>
-<form th:action="@{/emp/main}">
+    <form th:action="@{/emp/canComment}">
+        <div>
+            <button type="submit">추천/비추천 취소</button>
+        </div>
+    </form>
+    <form th:action="@{/emp/main}">
         <button type="submit">돌아가기</button>
-</form>
+    </form>
 </div>
 </body>
 </html>
