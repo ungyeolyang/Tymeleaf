@@ -1,50 +1,71 @@
 <!DOCTYPE html>
-<html xmlns:th="http:/www.thymeleaf.org">
+<html xmlns:th="http:/www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>작성한 댓글</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .comment-box {
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #e8e5fc;
+        }
+        form {
+        display: inline-block; /* 각 form 요소를 한 줄에 표시 */
+        margin-right: 10px; /* 버튼 간 간격 조정 */
+    }
+        .header-title {
+        font-size : 30px;
+        color : #010007;
+        margin-bottom : 20px;
+    </style>
 </head>
-<body class="container">
-<h2>작성한 댓글</h2>
-<ul th:each="my : ${myComment}">
-    <li  th:text="${my.commentNo + ' / '}"></li>
-    <li  th:text="${my.nutrientsName + ' / '}"></li>
-    <li  th:text="${' : ' + my.content + ' / '}"></li>
-    <li  th:text="${'좋아요 : ' + my.good +' / '}"></li>
-    <li  th:text="${'싫어요 : ' + my.bad}"></li>
-</ul>
-<h2>추천한 댓글</h2>
-<ul th:each="myGood : ${myGoodComment}">
-    <li  th:text="${myGood.commentNo + ' / '}"></li>
-    <li  th:text="${myGood.nutrientsName + ' / '}"></li>
-    <li  th:text="${myGood.userNick}"></li>
-    <li  th:text="${'(' + myGood.userId + ')'}"></li>
-    <li  th:text="${' : ' + myGood.content + ' / '}"></li>
-    <li  th:text="${'좋아요 : ' + myGood.good +' / '}"></li>
-    <li  th:text="${'싫어요 : ' + myGood.bad}"></li>
-</ul>
-<h2>비추천한 댓글</h2>
-<ul th:each="my : ${myBadComment}">
-    <li  th:text="${myBad.commentNo + ' / '}"></li>
-    <li  th:text="${myBad.nutrientsName + ' / '}"></li>
-    <li  th:text="${myBad.userNick}"></li>
-    <li  th:text="${'(' + myBad.userId + ')'}"></li>
-    <li  th:text="${' : ' + myBad.content + ' / '}"></li>
-    <li  th:text="${'좋아요 : ' + myBad.good +' / '}"></li>
-    <li  th:text="${'싫어요 : ' + myBad.bad}"></li>
-</ul>
+<body class="myCommentcontainer">
+<div class="form-container">
+<h1 class = header-title>작성한 댓글</h1>
+<div th:each="my : ${myComment}" class="comment-box">
+    <div>
+        <span th:text="${my.commentNo + ' - '}"></span>
+        <span th:text="${my.nutrientsName}"></span>
+        <span th:text="${' : ' + my.content + '   '}"></span>
+        <span th:text="${'좋아요 : ' + my.good +' / '}"></span>
+        <span th:text="${'싫어요 : ' + my.bad}"></span><br>
+    </div>
+</div>
 
 <form th:action="@{/emp/modComment}">
-    <div>
         <button type="submit">수정하기</button>
-    </div>
 </form>
 <form th:action="@{/emp/delComment}">
-    <div>
         <button type="submit">댓글삭제</button>
-    </div>
 </form>
+
+<h1>추천한 댓글</h1>
+<div th:each="myGood : ${myGoodComment}">
+    <div>
+        <span th:text="${myGood.commentNo + ' / '}"></span>
+        <span th:text="${myGood.nutrientsName + ' / '}"></span>
+        <span th:text="${myGood.userNick + ' (' + myGood.userId + ')'}"></span>
+        <span th:text="${' : ' + myGood.content + ' / '}"></span><br>
+        <span th:text="${'좋아요 : ' + myGood.good +' / '}"></span>
+        <span th:text="${'싫어요 : ' + myGood.bad}"></span><br>
+    </div>
+</div>
+
+<h1>비추천한 댓글</h1>
+<div th:each="myBad : ${myBadComment}">
+    <div>
+        <span th:text="${myBad.commentNo + ' / '}"></span>
+        <span th:text="${myBad.nutrientsName + ' / '}"></span>
+        <span th:text="${myBad.userNick + ' (' + myBad.userId + ')'}"></span>
+        <span th:text="${' : ' + myBad.content + ' / '}"></span><br>
+        <span th:text="${'좋아요 : ' + myBad.good +' / '}"></span>
+        <span th:text="${'싫어요 : ' + myBad.bad}"></span><br>
+    </div>
+</div>
+
+
 <form th:action="@{/emp/canComment}">
     <div>
         <button type="submit">추천/비추천 취소</button>
@@ -52,7 +73,7 @@
 </form>
 <form th:action="@{/emp/main}">
         <button type="submit">돌아가기</button>
-    </div>
 </form>
+</div>
 </body>
 </html>
