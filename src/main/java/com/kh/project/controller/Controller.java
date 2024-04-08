@@ -85,18 +85,10 @@ public class Controller {
         return "thymeleafEx/findPwRst";
     }
     @GetMapping("/main")
-    public String main(Model model) {
-        SearchVO searchVO = new SearchVO();
-        searchVO.setNumber(1);
-        model.addAttribute("searchAll", searchVO);
+    public String main() {
         return "thymeleafEx/main";
     }
-    @PostMapping("/main")
-    public String Checkmain(@ModelAttribute("searchAll") SearchVO searchVO,Model model) {
-        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
-        model.addAttribute("ingredients", searchDAO.search(searchVO));
-        return "thymeleafEx/nutrientsList";
-    }
+
 
     @GetMapping("/searchIn")
     public String SearchIn(Model model) {
