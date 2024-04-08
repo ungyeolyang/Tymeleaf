@@ -4,35 +4,52 @@
     <meta charset="UTF-8">
     <title>영양제 결과</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .info-box {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: calc(30% - 20px); /* 좌우 여백 조절 */
+            text-align: left; /* 텍스트를 왼쪽 정렬 */
+            margin-right: 20px; /* 박스 간격 조절 */
+            margin-bottom: 20px; /* 박스 아래 여백 조절 */
+            float: left;
+        }
+        .ingredient-box {
+            background-color: #f0f0f0; /* 회색 배경색 */
+            padding: 5px; /* 내부 패딩 */
+            border-radius: 5px; /* 둥근 테두리 */
+            display: inline-block; /* 인라인 요소로 배치 */
+        }
+        .company {
+            font-size: 80%; /* 글자 크기를 작게 설정 */
+            color: #adb5bd; /* 약간 진한 회색으로 설정 */
+            display: block; /* 아랫줄로 내리도록 설정 */
+            margin-top: 5px; /* 윗 여백 조절 */
+        }
+    </style>
 </head>
 <body class="container">
 <h2>영양제</h2>
-<table>
-    <thead>
-    <tr>
-        <th>영양제 이름</th>
-        <th>성분</th>
-        <th>성분</th>
-        <th>제조사</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each = "ing : ${ingredients}">
-        <td th:text="${ing.nutrientsName}"></td>
-        <td th:text="${ing.ingredientA}"></td>
-        <td th:text="${ing.ingredientB}"></td>
-        <td th:text="${ing.company}"></td>
-    </tr>
-    </tbody>
-</table>
-<form th:action="@{/emp/searchNu}">
-    <div>
-        <button type="submit">영양제 검색</button>
-    </div>
+<div th:each="ing, iterStat : ${ingredients}" class="info-box">
+    <p>
+        <span th:text="${ing.company}" class="company"></span>
+        <span th:text="${ing.nutrientsName}"></span>
+    </p>
+    <p>
+        <span class="ingredient-box" th:text="${ing.ingredientA}"></span>
+        <span class="ingredient-box" th:text="${ing.ingredientB}"></span>
+    </p>
+</div>
+<div style="clear: both;"></div> <!-- float된 요소의 영향 해제 -->
+<form th:action="@{/emp/searchNu}" style="display: inline;">
+    <button type="submit">영양제 검색</button>
 </form>
-<form th:action="@{/emp/main}">
-        <button type="submit">돌아가기</button>
-    </div>
+<form th:action="@{/emp/main}" style="display: inline;">
+    <button type="submit">돌아가기</button>
 </form>
 </body>
 </html>
