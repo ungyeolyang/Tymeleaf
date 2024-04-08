@@ -5,12 +5,6 @@
     <title>작성한 댓글</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
-        .comment-box {
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #e8e5fc;
-        }
         form {
         display: inline-block; /* 각 form 요소를 한 줄에 표시 */
         margin-right: 10px; /* 버튼 간 간격 조정 */
@@ -24,11 +18,11 @@
 <body class="myCommentcontainer">
 <div class="form-container">
 <h1 class = header-title>작성한 댓글</h1>
-<div th:each="my : ${myComment}" class="comment-box">
+<div th:each="my : ${myComment}">
     <div>
-        <span th:text="${my.commentNo + ' - '}"></span>
-        <span th:text="${my.nutrientsName}"></span>
-        <span th:text="${' : ' + my.content + '   '}"></span>
+        <strong><span th:text="${my.commentNo + ' - '}"></span>
+        <span th:text="${my.nutrientsName}"></span></strong>
+        <span th:text="${' : ' + my.content + '   '}"></span><br>
         <span th:text="${'좋아요 : ' + my.good +' / '}"></span>
         <span th:text="${'싫어요 : ' + my.bad}"></span><br>
     </div>
@@ -41,7 +35,7 @@
         <button type="submit">댓글삭제</button>
 </form>
 
-<h1>추천한 댓글</h1>
+<h1 class = header-title>추천한 댓글</h1>
 <div th:each="myGood : ${myGoodComment}">
     <div>
         <span th:text="${myGood.commentNo + ' / '}"></span>
@@ -53,7 +47,7 @@
     </div>
 </div>
 
-<h1>비추천한 댓글</h1>
+<h1 class = header-title>비추천한 댓글</h1>
 <div th:each="myBad : ${myBadComment}">
     <div>
         <span th:text="${myBad.commentNo + ' / '}"></span>

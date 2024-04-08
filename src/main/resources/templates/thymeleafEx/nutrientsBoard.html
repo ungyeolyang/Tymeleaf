@@ -4,46 +4,84 @@
     <meta charset="UTF-8">
     <title>영양제 결과</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .comment {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .comment-separator {
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .button-group {
+            display: flex;
+            /* justify-content: space-between; */
+            margin-bottom: 10px;
+        }
+        .button-group button {
+            margin-right: 5px; /* Adjust the spacing between buttons */
+        }
+    </style>
 </head>
 <body class="container">
 <h2>영양제</h2>
 <ul th:each="ing : ${ingredients}">
-    <li  th:text="${'영양제 : ' + ing.nutrientsName}"></li>
-    <li  th:text="${'성분 : ' + ing.ingredientA}"></li>
-    <li  th:text="${'성분 : ' + ing.ingredientB}"></li>
-    <li  th:text="${'제조사 : ' + ing.company}"></li>
-    <li  th:text="${'복용법 : ' + ing.howToTake}"></li>
+    <li><strong>영양제:</strong> <span th:text="${ing.nutrientsName}"></span></li>
+    <li><strong>성분:</strong> <span th:text="${ing.ingredientA}"></span></li>
+    <li><strong>성분:</strong> <span th:text="${ing.ingredientB}"></span></li>
+    <li><strong>제조사:</strong> <span th:text="${ing.company}"></span></li>
+    <li><strong>복용법:</strong> <span th:text="${ing.howToTake}"></span></li>
 </ul>
 <ul>
-    <li th:text="${'효능 :' + efficacys}"></li>
+    <li><strong>효능:</strong> <span th:text="${efficacys}"></span></li>
 </ul>
-<ul th:each="com : ${comments}">
-    <li  th:text="${com.commentNo +' / '}"></li>
-    <li  th:text="${com.userNick}"></li>
-    <li  th:text="${'('+ com.userId + ')'}"></li>
-    <li  th:text="${com.content}"></li>
-    <li  th:text="${'좋아요 : ' + com.good}"></li>
-    <li  th:text="${'싫어요 : ' + com.bad}"></li>
-</ul>
+<div class="comment-separator"></div>
+<div th:each="com : ${comments}" class="comment">
+    <p><strong><span th:text="${com.commentNo}">번</span></strong> -
+        <strong><span th:text="${com.userNick}"></span></strong>
+        (<span th:text="${com.userId}"></span>):
+        <span th:text="${com.content}"></span></p>
+    <p>좋아요: <span th:text="${com.good}"></span> / 싫어요: <span th:text="${com.bad}"></span></p>
+</div>
 
-<form th:action="@{/emp/comment}">
-    <div>
+<div class="button-group">
+    <form th:action="@{/emp/comment}">
         <button type="submit">댓글 쓰기</button>
-    </div>
-</form>
-<form th:action="@{/emp/commentGood}">
-    <div>
+    </form>
+    <form th:action="@{/emp/commentGood}">
         <button type="submit">추천하기</button>
-    </div>
-</form>
-<form th:action="@{/emp/commentBad}">
-    <div>
+    </form>
+    <form th:action="@{/emp/commentBad}">
         <button type="submit">비추천하기</button>
-    </div>
-</form>
+    </form>
+</div>
 <form th:action="@{/emp/main}">
-        <button type="submit">돌아가기</button>
-    </div>
+    <button type="submit">돌아가기</button>
 </form>
 </body>
 </html>
