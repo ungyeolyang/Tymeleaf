@@ -614,12 +614,12 @@ public class BoardDAO {
         Common.close(conn);
     }
 
-    public boolean checkMyContent(int num) {
+    public boolean checkMyContent(int num,String id) {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
 
-            String query = "SELECT * FROM BOARD WHERE USER_ID = '" +   "' AND COMMENT_NO = '" + num + "'";
+            String query = "SELECT * FROM BOARD WHERE USER_ID = '" + id  +"' AND COMMENT_NO = '" + num + "'";
             rs = stmt.executeQuery(query);
             if (!rs.next()) {
                 System.out.println("존재하지 않는 글입니다.");
