@@ -174,10 +174,6 @@ public class Controller {
             model.addAttribute("fail", boardDAO.checkComment(nutrientsVO.getNutrientsName()) );
             return "thymeleafEx/commentFail";
         }
-        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
-            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
-            return "thymeleafEx/commentFail";
-        }
         model.addAttribute("commentGood", new SearchVO());
         return "thymeleafEx/commentGood";
     }
@@ -188,6 +184,10 @@ public class Controller {
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
         if(!boardDAO.checkCommentGood(searchVO.getNumber(),memberVO.getId())){
             model.addAttribute("fail", "이미 추천한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
+            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
             return "thymeleafEx/commentFail";
         }
         else boardDAO.commentGood(searchVO.getNumber(),memberVO.getId());
@@ -203,10 +203,6 @@ public class Controller {
             model.addAttribute("fail", boardDAO.checkComment(nutrientsVO.getNutrientsName()) );
             return "thymeleafEx/commentFail";
         }
-        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
-            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
-            return "thymeleafEx/commentFail";
-        }
         model.addAttribute("comment", new SearchVO());
         return "thymeleafEx/commentBad";
     }
@@ -217,6 +213,10 @@ public class Controller {
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
         if(!boardDAO.checkCommentBad(searchVO.getNumber(),memberVO.getId())){
             model.addAttribute("fail", "이미 비추천한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        else if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
+            model.addAttribute("fail", "본인이 작성한 댓글입니다.");
             return "thymeleafEx/commentFail";
         }
         else boardDAO.commentBad(searchVO.getNumber(),memberVO.getId());
