@@ -90,36 +90,35 @@ public class Controller {
         return "thymeleafEx/main";
     }
 
-
-    @GetMapping("/searchIn")
-    public String SearchIn(Model model) {
+    @GetMapping("/search")
+    public String Search(Model model) {
         SearchVO searchVO = new SearchVO();
         searchVO.setNumber(1);
-        model.addAttribute("searchIn", searchVO);
-        return "thymeleafEx/searchIn";
+        model.addAttribute("search", searchVO);
+        return "thymeleafEx/search";
     }
 
-    @PostMapping("/searchIn")
-    public String CheckSearchIn(@ModelAttribute("searchIn") SearchVO searchVO, Model model) {
+    @PostMapping("/search")
+    public String CheckSearch(@ModelAttribute("search") SearchVO searchVO, Model model) {
         if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
         model.addAttribute("ingredients", searchDAO.search(searchVO));
         return "thymeleafEx/nutrientsList";
     }
 
-    @GetMapping("/searchEf")
-    public String SearchEf(Model model) {
-        SearchVO searchVO = new SearchVO();
-        searchVO.setNumber(2);
-        model.addAttribute("searchEf", searchVO);
-        return "thymeleafEx/searchEf";
-    }
-
-    @PostMapping("/searchEf")
-    public String CheckSearchEf(@ModelAttribute("searchEf") SearchVO searchVO, Model model) {
-        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
-        model.addAttribute("ingredients", searchDAO.search(searchVO));
-        return "thymeleafEx/nutrientsList";
-    }
+//    @GetMapping("/searchEf")
+//    public String SearchEf(Model model) {
+//        SearchVO searchVO = new SearchVO();
+//        searchVO.setNumber(2);
+//        model.addAttribute("searchEf", searchVO);
+//        return "thymeleafEx/searchEf";
+//    }
+//
+//    @PostMapping("/searchEf")
+//    public String CheckSearchEf(@ModelAttribute("searchEf") SearchVO searchVO, Model model) {
+//        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
+//        model.addAttribute("ingredients", searchDAO.search(searchVO));
+//        return "thymeleafEx/nutrientsList";
+//    }
 
     @GetMapping("/searchNu")
     public String SearchNu(Model model) {
