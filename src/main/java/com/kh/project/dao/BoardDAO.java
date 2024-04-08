@@ -7,15 +7,126 @@ import com.kh.project.vo.NutrientsVO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class BoardDAO {
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
+    public int checkWish(String nname,String id) {
+        String query = "SELECT NUTRIENTS_NAME FROM WISHLIST WHERE NUTRIENTS_NAME LIKE '%" + nname + "%' AND USER_ID = '" + id + "'";
+        List<String> list = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                list.add(rs.getString("NUTRIENTS_NAME"));
+            }
+            if(list.size()>1) return 2;
+            else if(list.size() ==1 ) return 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return 0;
+    }
+
+    public void wishIn(String nname, String id) {
+        String query = "INSERT INTO WISHLIST VALUES('" + nname + "', '" + id + "')";
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+        System.out.println("찜이 완료되었습니다.");
+    }
+
+    public TreeSet<NutrientsVO> wishList(String id) {
+        String query = null;
+        TreeSet<NutrientsVO> set = new TreeSet<>();
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            query = "SELECT * FROM NUTRIENTS WHERE NUTRIENTS_NAME IN(SELECT NUTRIENTS_NAME FROM WISHLIST WHERE USER_ID = '" + id+"')";
+
+            rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                String nutrientsName = rs.getString("NUTRIENTS_NAME");
+                String ingredientA = rs.getString("INGREDIENT_A");
+                String ingredientB = rs.getString("INGREDIENT_B");
+                String company = rs.getString("COMPANY");
+                String howToTake = rs.getString("HOW_TO_TAKE");
+
+                NutrientsVO vo = new NutrientsVO();
+                vo.setNutrientsName(nutrientsName);
+                vo.setIngredientA(ingredientA);
+                vo.setIngredientB(ingredientB);
+                vo.setCompany(company);
+                vo.setHowToTake(howToTake);
+
+                set.add(vo);
+            }
+            if (set.isEmpty()) {
+                return set;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        return set;
+    }
+    public void deleteWish(String str,String id) {
+        String query = "DELETE FROM WISHLIST WHERE NUTRIENTS_NAME LIKE '%" + str + "%' AND USER_ID = '"+id+"'";
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
+    public void deleteWishALL(String id) {
+        String query = "DELETE FROM WISHLIST WHERE USER_ID = '" + id +"'";
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            int ret = stmt.executeUpdate(query);
+            System.out.println("Return : " + ret);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Common.close(stmt);
+        Common.close(conn);
+    }
     public boolean checkMine(String str ,String id){
         String query = "SELECT USER_ID FROM BOARD WHERE NUTRIENTS_NAME = '" + str + "'";
         String mine = null;

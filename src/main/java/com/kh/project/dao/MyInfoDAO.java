@@ -116,6 +116,7 @@ public class MyInfoDAO {
             System.out.println("Return : " + ret1);
             board.deleteBadAll(memberVO.getId());
             board.deleteGoodAll(memberVO.getId());
+            board.deleteWishALL(memberVO.getId());
 
         } catch (Exception e) {
             e.printStackTrace();

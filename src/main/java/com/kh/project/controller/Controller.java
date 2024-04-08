@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 @org.springframework.stereotype.Controller
 @RequestMapping("/emp")
@@ -177,10 +178,12 @@ public class Controller {
             return "thymeleafEx/commentFail";
         }
         boardDAO.comment(nutrientsVO, memberVO, searchVO.getData());
-        SearchVO searchVO3 = new SearchVO();
-        searchVO3.setNumber(1);
-        model.addAttribute("search", searchVO);
-        return "thymeleafEx/main";
+//        SearchVO searchVO3 = new SearchVO();
+//        searchVO3.setNumber(1);
+//        model.addAttribute("search", searchVO);
+//        return "thymeleafEx/main";
+          model.addAttribute("fail", "댓글 작성이 완료되었습니다.");
+          return "thymeleafEx/commentFail";
     }
 
     @GetMapping("/commentGood")
@@ -248,12 +251,59 @@ public class Controller {
         model.addAttribute("fail", "비추천 헀습니다.");
         return "thymeleafEx/commentFail";
     }
+    @GetMapping("/wishList")
+    public String wishList(Model model, HttpSession session) {
+        NutrientsVO nutrientsVO = (NutrientsVO) session.getAttribute("userNu");
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        if(boardDAO.checkWish(nutrientsVO.getNutrientsName(),memberVO.getId()) != 0) {
+            model.addAttribute("fail", "이미 찜한 상품입니다.");
+            return "thymeleafEx/wishRst";
+        }
+        else boardDAO.wishIn(nutrientsVO.getNutrientsName(),memberVO.getId());
+        model.addAttribute("fail", "찜이 완료되었습니다.");
+        return "thymeleafEx/wishRst";
+    }
 
     @GetMapping("/mypage")
     public String myPage(Model model, HttpSession session) {
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
         model.addAttribute("myNick", memberVO.getNick());
         return "thymeleafEx/myPage";
+    }
+
+    @GetMapping("/myWish")
+    public String myWish(Model model, HttpSession session) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        if (boardDAO.wishList(memberVO.getId()).isEmpty()) {
+            model.addAttribute("fail", "찜목록이 존재하지 않습니다.");
+            return "thymeleafEx/wishRst";
+        }
+        model.addAttribute("myWish",boardDAO.wishList(memberVO.getId()));
+        return "thymeleafEx/myWish";
+        }
+
+
+    @GetMapping("/canWish")
+    public String canWish(Model model, HttpSession session) {
+        model.addAttribute("canWish",new SearchVO());
+        return "thymeleafEx/canWish";
+    }
+
+@PostMapping("/canWish")
+public String checkCanWish(@ModelAttribute("canWish") SearchVO searchVO, Model model, HttpSession session) {
+    NutrientsVO nutrientsVO = (NutrientsVO) session.getAttribute("userNu");
+    MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+    if (boardDAO.checkWish(nutrientsVO.getNutrientsName(),memberVO.getId()) == 2) {
+        model.addAttribute("fail", "검색결과가 2개 이상 존재합니다. 정확한 이름을 입력해 주세요");
+        return "thymeleafEx/canWishRst";
+    } else if (boardDAO.checkWish(nutrientsVO.getNutrientsName(),memberVO.getId()) == 0) {
+        model.addAttribute("fail", "검색결과가 존재하지 않습니다. 정확한 이름을 입력해 주세요");
+        return "thymeleafEx/canWishRst";
+    } else {
+        boardDAO.deleteWish(nutrientsVO.getNutrientsName(),memberVO.getId());
+        model.addAttribute("fail", "찜삭제가 완료되었습니다.");
+        return "thymeleafEx/canWishRst";
+    }
     }
 
     @GetMapping("/myInfo")
@@ -276,10 +326,12 @@ public class Controller {
                             HttpSession session,Model model) {
         myInfoDAO.updateMyInfo(myInfoVO);
         session.setAttribute("userInfo",myInfoVO);
-        SearchVO searchVO = new SearchVO();
-        searchVO.setNumber(1);
-        model.addAttribute("search", searchVO);
-        return "thymeleafEx/main";
+//        SearchVO searchVO = new SearchVO();
+//        searchVO.setNumber(1);
+//        model.addAttribute("search", searchVO);
+//        return "thymeleafEx/main";
+        model.addAttribute("fail", "개인정보 수정이 완료되었습니다.");
+        return "thymeleafEx/myInfoRst";
     }
 
     @GetMapping("/delCheck")
@@ -334,11 +386,12 @@ public class Controller {
             return "thymeleafEx/commentFail";
         }
         boardDAO.updateContent(searchVO.getNumber(), searchVO.getData());
-        SearchVO searchVO1 = new SearchVO();
-        searchVO1.setNumber(1);
-        model.addAttribute("search", searchVO1);
-        return "thymeleafEx/main";
-
+//        SearchVO searchVO1 = new SearchVO();
+//        searchVO1.setNumber(1);
+//        model.addAttribute("search", searchVO1);
+//        return "thymeleafEx/main";
+          model.addAttribute("fail", "댓글 수정이 완료되었습니다.");
+          return "thymeleafEx/commentFail";
     }
 
     @GetMapping("/delComment")
@@ -362,10 +415,12 @@ public class Controller {
         boardDAO.deleteContent(searchVO.getNumber());
         boardDAO.deleteBad(searchVO.getNumber());
         boardDAO.deleteGood(searchVO.getNumber());
-        SearchVO searchVO2 = new SearchVO();
-        searchVO2.setNumber(1);
-        model.addAttribute("search", searchVO2);
-        return "thymeleafEx/main";
+//        SearchVO searchVO2 = new SearchVO();
+//        searchVO2.setNumber(1);
+//        model.addAttribute("search", searchVO2);
+//        return "thymeleafEx/main";
+        model.addAttribute("fail", "댓글 삭제가 완료되었습니다.");
+        return "thymeleafEx/commentFail";
     }
 
     @GetMapping("/canComment")

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>찜 취소</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+<div class="form-container">
+    <h1>찜 취소</h1>
+    <form th:action="@{/emp/canWish}" th:object="${canWish}" method="post">
+        <div>
+            <input type="text" id="data" th:field="*{data}" placeholder="취소할 영양제 이름을 입력하세요."/>
+        </div>
+        <div>
+            <button type="submit">확인</button>
+        </div>
+    </form>
+    <form th:action="@{/emp/main}">
+        <div>
+            <button type="submit">돌아가가</button>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>
