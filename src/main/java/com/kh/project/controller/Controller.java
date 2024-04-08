@@ -33,6 +33,9 @@ public class Controller {
             return "thymeleafEx/loginFail";
         } else {
             session.setAttribute("userInfo", myInfoDAO.myInfo(memberVO));
+            SearchVO searchVO = new SearchVO();
+            searchVO.setNumber(1);
+            model.addAttribute("search", searchVO);
             return "thymeleafEx/main";
         }
     }
@@ -85,25 +88,36 @@ public class Controller {
         model.addAttribute("pwFind",memberDAO.checkFindPw(memberVO));
         return "thymeleafEx/findPwRst";
     }
-    @GetMapping("/main")
-    public String main() {
-        return "thymeleafEx/main";
-    }
 
-    @GetMapping("/search")
-    public String Search(Model model) {
+    @GetMapping("/main")
+    public String main(Model model) {
         SearchVO searchVO = new SearchVO();
         searchVO.setNumber(1);
         model.addAttribute("search", searchVO);
-        return "thymeleafEx/search";
+        return "thymeleafEx/main";
     }
 
-    @PostMapping("/search")
-    public String CheckSearch(@ModelAttribute("search") SearchVO searchVO, Model model) {
+    @PostMapping("/main")
+    public String checkmain(@ModelAttribute("search")SearchVO searchVO,Model model) {
         if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
         model.addAttribute("ingredients", searchDAO.search(searchVO));
         return "thymeleafEx/nutrientsList";
     }
+
+//    @GetMapping("/search")
+//    public String Search(Model model) {
+//        SearchVO searchVO = new SearchVO();
+//        searchVO.setNumber(1);
+//        model.addAttribute("search", searchVO);
+//        return "thymeleafEx/search";
+//    }
+//
+//    @PostMapping("/search")
+//    public String CheckSearch(@ModelAttribute("search") SearchVO searchVO, Model model) {
+//        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
+//        model.addAttribute("ingredients", searchDAO.search(searchVO));
+//        return "thymeleafEx/nutrientsList";
+//    }
 
 //    @GetMapping("/searchEf")
 //    public String SearchEf(Model model) {
@@ -163,6 +177,9 @@ public class Controller {
             return "thymeleafEx/commentFail";
         }
         boardDAO.comment(nutrientsVO, memberVO, searchVO.getData());
+        SearchVO searchVO3 = new SearchVO();
+        searchVO3.setNumber(1);
+        model.addAttribute("search", searchVO);
         return "thymeleafEx/main";
     }
 
@@ -256,9 +273,12 @@ public class Controller {
                             @ModelAttribute("juminS") String juminS,
                             @ModelAttribute("gender") String gender,
                             @ModelAttribute("age") String age,
-                            HttpSession session) {
+                            HttpSession session,Model model) {
         myInfoDAO.updateMyInfo(myInfoVO);
         session.setAttribute("userInfo",myInfoVO);
+        SearchVO searchVO = new SearchVO();
+        searchVO.setNumber(1);
+        model.addAttribute("search", searchVO);
         return "thymeleafEx/main";
     }
 
@@ -303,8 +323,9 @@ public class Controller {
     }
 
     @PostMapping("/modComment")
-    public String checkModComment(@ModelAttribute("modComment") SearchVO searchVO,Model model) {
-        if (!boardDAO.checkMyContent(searchVO.getNumber())) {
+    public String checkModComment(@ModelAttribute("modComment") SearchVO searchVO,Model model,HttpSession session) {
+        MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
+        if (!boardDAO.checkMyContent(searchVO.getNumber(),memberVO.getId())) {
             model.addAttribute("fail","내가 작성한 댓글이 존재하지 않습니다.");
             return "thymeleafEx/commentFail";
         }
@@ -313,6 +334,9 @@ public class Controller {
             return "thymeleafEx/commentFail";
         }
         boardDAO.updateContent(searchVO.getNumber(), searchVO.getData());
+        SearchVO searchVO1 = new SearchVO();
+        searchVO1.setNumber(1);
+        model.addAttribute("search", searchVO1);
         return "thymeleafEx/main";
 
     }
@@ -329,14 +353,18 @@ public class Controller {
         return "thymeleafEx/delComment";
     }
     @PostMapping("/delComment")
-    public String checkDelComment(@ModelAttribute("delComment") SearchVO searchVO,Model model) {
-        if (!boardDAO.checkMyContent(searchVO.getNumber())) {
+    public String checkDelComment(@ModelAttribute("delComment") SearchVO searchVO,Model model,HttpSession session) {
+        MemberVO memberVO =(MemberVO) session.getAttribute("userInfo");
+        if (!boardDAO.checkMyContent(searchVO.getNumber(),memberVO.getId())) {
             model.addAttribute("fail","내가 작성한 댓글이 존재하지 않습니다.");
             return "thymeleafEx/commentFail";
         }
         boardDAO.deleteContent(searchVO.getNumber());
         boardDAO.deleteBad(searchVO.getNumber());
         boardDAO.deleteGood(searchVO.getNumber());
+        SearchVO searchVO2 = new SearchVO();
+        searchVO2.setNumber(1);
+        model.addAttribute("search", searchVO2);
         return "thymeleafEx/main";
     }
 
