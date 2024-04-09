@@ -105,36 +105,6 @@ public class Controller {
         return "thymeleafEx/nutrientsList";
     }
 
-//    @GetMapping("/search")
-//    public String Search(Model model) {
-//        SearchVO searchVO = new SearchVO();
-//        searchVO.setNumber(1);
-//        model.addAttribute("search", searchVO);
-//        return "thymeleafEx/search";
-//    }
-//
-//    @PostMapping("/search")
-//    public String CheckSearch(@ModelAttribute("search") SearchVO searchVO, Model model) {
-//        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
-//        model.addAttribute("ingredients", searchDAO.search(searchVO));
-//        return "thymeleafEx/nutrientsList";
-//    }
-
-//    @GetMapping("/searchEf")
-//    public String SearchEf(Model model) {
-//        SearchVO searchVO = new SearchVO();
-//        searchVO.setNumber(2);
-//        model.addAttribute("searchEf", searchVO);
-//        return "thymeleafEx/searchEf";
-//    }
-//
-//    @PostMapping("/searchEf")
-//    public String CheckSearchEf(@ModelAttribute("searchEf") SearchVO searchVO, Model model) {
-//        if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
-//        model.addAttribute("ingredients", searchDAO.search(searchVO));
-//        return "thymeleafEx/nutrientsList";
-//    }
-
     @GetMapping("/searchNu")
     public String SearchNu(Model model) {
         model.addAttribute("searchNu", new SearchVO());
@@ -223,12 +193,12 @@ public class Controller {
             model.addAttribute("fail", boardDAO.checkComment(nutrientsVO.getNutrientsName()) );
             return "thymeleafEx/commentFail";
         }
-        model.addAttribute("comment", new SearchVO());
+        model.addAttribute("commentBad", new SearchVO());
         return "thymeleafEx/commentBad";
     }
 
     @PostMapping("/commentBad")
-    public String CheckCommentBad(@ModelAttribute("comment") SearchVO searchVO, HttpSession session,Model model) {
+    public String CheckCommentBad(@ModelAttribute("commentBad") SearchVO searchVO, HttpSession session,Model model) {
         NutrientsVO nutrientsVO = (NutrientsVO) session.getAttribute("userNu");
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
         if(!boardDAO.checkCommentBad(searchVO.getNumber(),memberVO.getId())){
@@ -293,10 +263,10 @@ public class Controller {
 public String checkCanWish(@ModelAttribute("canWish") SearchVO searchVO, Model model, HttpSession session) {
     MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
     if (boardDAO.checkWish(searchVO.getData(),memberVO.getId()) == 2) {
-        model.addAttribute("fail", "검색결과가 2개 이상 존재합니다. 정확한 이름을 입력해 주세요");
+        model.addAttribute("fail", "검색결과가 2개 이상 존재합니다.");
         return "thymeleafEx/canWishRst";
     } else if (boardDAO.checkWish(searchVO.getData(),memberVO.getId()) == 0) {
-        model.addAttribute("fail", "검색결과가 존재하지 않습니다. 정확한 이름을 입력해 주세요");
+        model.addAttribute("fail", "검색결과가 존재하지 않습니다.");
         return "thymeleafEx/canWishRst";
     } else {
         boardDAO.deleteWish(searchVO.getData(),memberVO.getId());
