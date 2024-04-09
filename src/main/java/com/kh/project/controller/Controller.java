@@ -182,7 +182,7 @@ public class Controller {
         }
         else boardDAO.commentGood(searchVO.getNumber(),memberVO.getId());
         boardDAO.updateGoodBoard(boardDAO.checkGood(searchVO.getNumber()),searchVO.getNumber());
-        model.addAttribute("fail", "추천 헀습니다.");
+        model.addAttribute("fail", "추천 했습니다.");
         return "thymeleafEx/commentFail";
     }
     @GetMapping("/commentBad")
@@ -218,7 +218,7 @@ public class Controller {
             model.addAttribute("fail", "비추천 누적으로 댓글이 삭제되었습니다.");
             return "thymeleafEx/commentFail";
         }
-        model.addAttribute("fail", "비추천 헀습니다.");
+        model.addAttribute("fail", "비추천 했습니다.");
         return "thymeleafEx/commentFail";
     }
     @GetMapping("/wishList")
