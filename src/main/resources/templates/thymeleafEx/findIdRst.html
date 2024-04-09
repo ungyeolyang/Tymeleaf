@@ -6,11 +6,13 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body class="container">
+<div class="form-container">
 <h2></h2>
     <p th:text="${'아이디 : ' + idFind}"></p>
 <form th:action="@{/emp/start}">
         <button type="submit">돌아가기</button>
-    </div>
+
 </form>
+</div>
 </body>
 </html>

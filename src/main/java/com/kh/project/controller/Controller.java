@@ -107,7 +107,7 @@ public class Controller {
     }
 
     @GetMapping("/searchNu")
-    public String SearchNu(Model model) {
+    public String searchNu(Model model) {
         model.addAttribute("searchNu", new SearchVO());
         return "thymeleafEx/searchNu";
     }
@@ -122,8 +122,9 @@ public class Controller {
         NutrientsVO voNut = boardDAO.boardNut(searchVO.getData());
         list.add(voNut);
         session.setAttribute("userNu", voNut);
+        String efficacys = boardDAO.boardEFF(searchVO.getData()).toString().replace("[","").replace("]","");
         model.addAttribute("ingredients", list);
-        model.addAttribute("efficacys", boardDAO.boardEFF(searchVO.getData()));
+        model.addAttribute("efficacys", efficacys);
         model.addAttribute("comments", boardDAO.boardList(searchVO.getData()));
         model.addAttribute("comment", new SearchVO());
         return "thymeleafEx/nutrientsBoard";
@@ -228,7 +229,7 @@ public class Controller {
         return "thymeleafEx/wishRst";
     }
 
-    @GetMapping("/mypage")
+    @GetMapping("/myPage")
     public String myPage(Model model, HttpSession session) {
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
         model.addAttribute("myNick", memberVO.getNick());
