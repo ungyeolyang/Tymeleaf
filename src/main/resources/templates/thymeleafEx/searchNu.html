@@ -3,15 +3,33 @@
 <head>
     <title>영양제 검색창</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .form-group {
+            display: flex;
+            justify-content: flex-end; /* Align to the right */
+            margin-bottom: 10px;
+            flex-direction: row;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group button {
+            margin-left: 5px; /* Adjust the spacing between buttons */
+        }
+
+    </style>
 </head>
 <body class="container">
-<div class="form-container">
+<div>
     <h1>영양제 검색</h1>
     <form th:action="@{/emp/searchNu}" th:object="${searchNu}" method="post">
-        <div>
-            <input type="text" id="data" th:field="*{data}" placeholder="영양제 이름을 입력하세요"/>
-        </div>
-        <div>
+        <div class="form-group">
+            <input type="text" id="data" th:field="*{data}" placeholder="영양제 이름을 입력하세요" />
             <button type="submit">검색</button>
         </div>
     </form>

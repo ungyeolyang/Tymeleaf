@@ -39,7 +39,7 @@
             margin-bottom: 20px;
         }
         .button-group {
-            display: flex;
+            display: block;
             justify-content: space-between; /* Adjusted to space between buttons */
             margin-bottom: 10px;
         }
@@ -79,17 +79,17 @@
 <form th:action="@{/emp/comment}" th:object="${comment}" method="post">
     <div class="form-group">
         <input type="text" id="data" th:field="*{data}" placeholder="댓글을 입력하세요"/>
-        <button type="submit">확인</button>
+        <button type="submit" style="min-width: 80px;">확인</button>
     </div>
 </form>
 <div class="button-group">
-    <form th:action="@{/emp/commentGood}">
+    <form th:action="@{/emp/commentGood}" style="display: inline-block;">
         <button type="submit">댓글 추천하기</button>
     </form>
-    <form th:action="@{/emp/commentBad}">
+    <form th:action="@{/emp/commentBad}" style="display: inline-block;">
         <button type="submit">댓글 비추천하기</button>
     </form>
-    <form th:action="@{/emp/wishList}">
+    <form th:action="@{/emp/wishList}" style="display: inline-block;">
         <button type="submit">찜하기</button>
     </form>
 </div>
