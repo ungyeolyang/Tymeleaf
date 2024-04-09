@@ -24,17 +24,17 @@ public class BoardDAO {
             while (rs.next()) {
                 list.add(rs.getString("NUTRIENTS_NAME"));
             }
-            if(list.size()>1) return 2;
-            else if(list.size() ==1 ) return 1;
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         Common.close(rs);
         Common.close(stmt);
         Common.close(conn);
-        return 0;
+        if(list.size()>1) return 2;
+        else if(list.size() ==1 ) return 1;
+        else return 0;
     }
 
     public void wishIn(String nname, String id) {

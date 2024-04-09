@@ -291,16 +291,15 @@ public class Controller {
 
 @PostMapping("/canWish")
 public String checkCanWish(@ModelAttribute("canWish") SearchVO searchVO, Model model, HttpSession session) {
-    NutrientsVO nutrientsVO = (NutrientsVO) session.getAttribute("userNu");
     MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
-    if (boardDAO.checkWish(nutrientsVO.getNutrientsName(),memberVO.getId()) == 2) {
+    if (boardDAO.checkWish(searchVO.getData(),memberVO.getId()) == 2) {
         model.addAttribute("fail", "검색결과가 2개 이상 존재합니다. 정확한 이름을 입력해 주세요");
         return "thymeleafEx/canWishRst";
-    } else if (boardDAO.checkWish(nutrientsVO.getNutrientsName(),memberVO.getId()) == 0) {
+    } else if (boardDAO.checkWish(searchVO.getData(),memberVO.getId()) == 0) {
         model.addAttribute("fail", "검색결과가 존재하지 않습니다. 정확한 이름을 입력해 주세요");
         return "thymeleafEx/canWishRst";
     } else {
-        boardDAO.deleteWish(nutrientsVO.getNutrientsName(),memberVO.getId());
+        boardDAO.deleteWish(searchVO.getData(),memberVO.getId());
         model.addAttribute("fail", "찜삭제가 완료되었습니다.");
         return "thymeleafEx/canWishRst";
     }
