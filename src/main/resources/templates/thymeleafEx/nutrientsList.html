@@ -30,6 +30,14 @@
             display: block; /* 아랫줄로 내리도록 설정 */
             margin-top: 5px; /* 윗 여백 조절 */
         }
+        .form-group {
+           display: flex;
+           justify-content: flex-end; /* Align to the right */
+           margin-bottom: 10px;
+        }
+        .form-group button {
+         margin-left: 5px; /* Adjust the spacing between buttons */
+        }
     </style>
 </head>
 <body class="container">
@@ -45,8 +53,11 @@
     </p>
 </div>
 <div style="clear: both;"></div> <!-- float된 요소의 영향 해제 -->
-<form th:action="@{/emp/searchNu}" style="display: inline;">
-    <button type="submit">영양제 검색</button>
+<form th:action="@{/emp/searchNu}" th:object="${searchNu}" method="post">
+    <div class="form-group">
+        <input type="text" id="data" th:field="*{data}" placeholder="영양제 이름을 입력하세요"/>
+        <button type="submit">검색</button>
+    </div>
 </form>
 <form th:action="@{/emp/main}" style="display: inline;">
     <button type="submit">돌아가기</button>

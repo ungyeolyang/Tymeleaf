@@ -40,11 +40,19 @@
         }
         .button-group {
             display: flex;
-            /* justify-content: space-between; */
+            justify-content: space-between; /* Adjusted to space between buttons */
             margin-bottom: 10px;
         }
         .button-group button {
             margin-right: 5px; /* Adjust the spacing between buttons */
+        }
+        .form-group {
+            display: flex;
+            justify-content: flex-end; /* Align to the right */
+            margin-bottom: 10px;
+        }
+        .form-group button {
+            margin-left: 5px; /* Adjust the spacing between buttons */
         }
     </style>
 </head>
@@ -68,11 +76,13 @@
         <span th:text="${com.content}"></span></p>
     <p>좋아요: <span th:text="${com.good}"></span> / 싫어요: <span th:text="${com.bad}"></span></p>
 </div>
-
+<form th:action="@{/emp/comment}" th:object="${comment}" method="post">
+    <div class="form-group">
+        <input type="text" id="data" th:field="*{data}" placeholder="댓글을 입력하세요"/>
+        <button type="submit">확인</button>
+    </div>
+</form>
 <div class="button-group">
-    <form th:action="@{/emp/comment}">
-        <button type="submit">댓글 쓰기</button>
-    </form>
     <form th:action="@{/emp/commentGood}">
         <button type="submit">댓글 추천하기</button>
     </form>

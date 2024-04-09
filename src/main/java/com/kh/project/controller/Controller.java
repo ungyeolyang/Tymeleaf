@@ -102,6 +102,7 @@ public class Controller {
     public String checkmain(@ModelAttribute("search")SearchVO searchVO,Model model) {
         if (searchDAO.search(searchVO).isEmpty()) return "thymeleafEx/searchFail";
         model.addAttribute("ingredients", searchDAO.search(searchVO));
+        model.addAttribute("searchNu", new SearchVO());
         return "thymeleafEx/nutrientsList";
     }
 
@@ -124,26 +125,19 @@ public class Controller {
         model.addAttribute("ingredients", list);
         model.addAttribute("efficacys", boardDAO.boardEFF(searchVO.getData()));
         model.addAttribute("comments", boardDAO.boardList(searchVO.getData()));
-        return "thymeleafEx/nutrientsBoard";
-    }
-
-    @GetMapping("/comment")
-    public String Comment(Model model,HttpSession session) {
-        MemberVO memberVO = (MemberVO)session.getAttribute("userInfo");
-        NutrientsVO nutrientsVO = (NutrientsVO)session.getAttribute("userNu");
-        if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
-            model.addAttribute("fail", "이미 작성한 댓글입니다.");
-            return "thymeleafEx/commentFail";
-        }
         model.addAttribute("comment", new SearchVO());
-        return "thymeleafEx/comment";
+        return "thymeleafEx/nutrientsBoard";
     }
 
     @PostMapping("/comment")
     public String checkComment(@ModelAttribute("comment") SearchVO searchVO, HttpSession session,Model model) {
         NutrientsVO nutrientsVO = (NutrientsVO) session.getAttribute("userNu");
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
-        if (searchVO.getData().isEmpty()) {
+        if(!boardDAO.checkMine(nutrientsVO.getNutrientsName(),memberVO.getId())) {
+            model.addAttribute("fail", "이미 작성한 댓글입니다.");
+            return "thymeleafEx/commentFail";
+        }
+        else if (searchVO.getData().isEmpty()) {
             model.addAttribute("fail", "내용을 입력하세요.");
             return "thymeleafEx/commentFail";
         }
