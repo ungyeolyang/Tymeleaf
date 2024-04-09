@@ -9,8 +9,7 @@
     <h1>영양제 검색</h1>
     <form th:action="@{/emp/searchNu}" th:object="${searchNu}" method="post">
         <div>
-            <label for="data">영양제 이름을 입력하세요</label>
-            <input type="text" id="data" th:field="*{data}" />
+            <input type="text" id="data" th:field="*{data}" placeholder="영양제 이름을 입력하세요"/>
         </div>
         <div>
             <button type="submit">검색</button>

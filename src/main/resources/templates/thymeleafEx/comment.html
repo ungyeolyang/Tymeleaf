@@ -10,7 +10,7 @@
     <form th:action="@{/emp/comment}" th:object="${comment}" method="post">
         <div>
             <label for="data">댓글을 입력하세요</label>
-            <input type="text" id="data" th:field="*{data}" />
+            <input type="text" id="data" th:field="*{data}"/>
         </div>
         <div>
             <button type="submit">확인</button>
