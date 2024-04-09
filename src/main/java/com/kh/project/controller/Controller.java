@@ -122,8 +122,9 @@ public class Controller {
         NutrientsVO voNut = boardDAO.boardNut(searchVO.getData());
         list.add(voNut);
         session.setAttribute("userNu", voNut);
+        String efficacys = boardDAO.boardEFF(searchVO.getData()).toString().replace("[","").replace("]","");
         model.addAttribute("ingredients", list);
-        model.addAttribute("efficacys", boardDAO.boardEFF(searchVO.getData()));
+        model.addAttribute("efficacys", efficacys);
         model.addAttribute("comments", boardDAO.boardList(searchVO.getData()));
         model.addAttribute("comment", new SearchVO());
         return "thymeleafEx/nutrientsBoard";
