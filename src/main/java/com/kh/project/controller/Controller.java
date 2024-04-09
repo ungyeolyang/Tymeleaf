@@ -107,7 +107,7 @@ public class Controller {
     }
 
     @GetMapping("/searchNu")
-    public String SearchNu(Model model) {
+    public String searchNu(Model model) {
         model.addAttribute("searchNu", new SearchVO());
         return "thymeleafEx/searchNu";
     }
@@ -229,7 +229,7 @@ public class Controller {
         return "thymeleafEx/wishRst";
     }
 
-    @GetMapping("/mypage")
+    @GetMapping("/myPage")
     public String myPage(Model model, HttpSession session) {
         MemberVO memberVO = (MemberVO) session.getAttribute("userInfo");
         model.addAttribute("myNick", memberVO.getNick());
